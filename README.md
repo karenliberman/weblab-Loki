@@ -1,5 +1,15 @@
 ### Project Log 
 
+## Project setup reminder
+- git clone link
+- npm run hotloader
+
+- To push
+  - git pull origin master
+  - git add .
+  - git commit -m "message"
+  - git push origin master
+
 ## TODO ITEMS FOR WEEK OF 1/11
 
 - Make sure the backend of the game is working correctly
