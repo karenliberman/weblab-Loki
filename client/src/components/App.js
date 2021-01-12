@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
+import NavBar from "./modules/NavBar.js";
+import Game from "./pages/Game.js";
 
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
+
 
 /**
  * Define the "App" component as a class.
@@ -47,6 +50,8 @@ class App extends Component {
   render() {
     return (
       <>
+        <NavBar/>
+
         <Router>
           <Skeleton
             path="/"
@@ -54,6 +59,8 @@ class App extends Component {
             handleLogout={this.handleLogout}
             userId={this.state.userId}
           />
+
+          <Game path="/game" />
           <NotFound default />
         </Router>
       </>
