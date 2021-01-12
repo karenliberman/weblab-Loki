@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Card from "./Card.js"
 
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
 const VALUES = ["A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -13,17 +14,21 @@ class Deck extends Component {
         discard: []
     }
   }
-  /* TO DO
+
   componentDidMount = () => {
     this.setState({hand: this.newHand()})
-    console.log("success");
+    console.log("you should see your hand");
   }
 
   newHand = () => {
-    
-  } */
-
-
+    let cur_deck = {...this.state.cards};
+    let cur_hand = [];
+    for(let i = 0; i<5; i++) {
+      cur_hand.push(cur_deck[i])
+    }
+    console.log(cur_hand);
+    return cur_hand
+  } 
 
   newDeck = () => {
       let cur_deck = []
@@ -43,8 +48,21 @@ class Deck extends Component {
 
   render() {
     return (
+
       <div>
-        {JSON.stringify(this.state.cards)}
+        Deck
+        {this.state.cards.map((card) => (
+          <Card value={card.value} suit={card.suit} />
+        ))}
+
+
+        <br/>
+        <br/>
+
+        hand
+        {this.state.hand.map((card) => (
+          <Card value={card.value} suit={card.suit} />
+        ))}
       </div>
     );
   }

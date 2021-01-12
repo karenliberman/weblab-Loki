@@ -1,3 +1,26 @@
+### Project Log 
+
+## TODO ITEMS FOR WEEK OF 1/11
+
+- Make sure the backend of the game is working correctly
+- Begin adding sockets for live multiplayer
+- Add server for a game for secure gameplay
+- Install Basic CSS function so the game at least looks presentable
+
+## 1/12/2021
+
+- Create a hand for the user
+- Allow user to "submit" the card they want to
+- Feedback for user to see if it defied the "rules" through console.log
+
+## 1/11/2021
+
+- Install project framework
+- Route game.js and navbar.js (css to come)
+- Create a deck of cards for the user
+
+
+
 # Project Skeleton
 
 ## What we provide
