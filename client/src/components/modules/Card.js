@@ -9,8 +9,8 @@ class Card extends Component {
   render() {
     return (
       <div>
-        <input type="checkbox" />
-        Card {this.props.suit} {this.props.value}
+        Card Suit: {this.props.suit} Value: {this.props.value} Unique.id: {this.props._id}
+        <button onClick={this.props.playerMove}>Move</button>
       </div>
     );
   }
