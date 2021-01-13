@@ -3,7 +3,7 @@ import Card from "./Card.js"
 
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
 const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-const CARD_IN_HAND = 10;
+const CARD_IN_HAND = 5;
 const NUM_DECKS = 1;
 
 class Deck extends Component {
@@ -24,7 +24,7 @@ class Deck extends Component {
 
   newHand = () => {
     let cur_deck = this.state.cards.slice();
-    let cur_hand = cur_deck.splice(0,5);
+    let cur_hand = cur_deck.splice(0,CARD_IN_HAND);
 
     this.setState({cards: cur_deck})
     return cur_hand
@@ -117,9 +117,11 @@ class Deck extends Component {
 
 
         hand
+        <ol>
         {this.state.hand.map((card, index) => (
           <Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => this.playerMove(index)}/>
         ))}
+        </ol>
 
         
         <br/>
@@ -127,9 +129,11 @@ class Deck extends Component {
 
 
         Deck
+        <ol>
         {this.state.cards.map((card, index) => (
-          <Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => this.playerMove(index)}/>
+          <Card value={card.value} suit={card.suit} _id={card._id}/>
         ))}
+        </ol>
 
       </div>
     );

@@ -8,10 +8,12 @@ class Card extends Component {
 
   render() {
     return (
+      <li>
       <div>
         Card Suit: {this.props.suit} Value: {this.props.value} Unique.id: {this.props._id}
         <button onClick={this.props.playerMove}>Place</button>
       </div>
+      </li>
     );
   }
 }
