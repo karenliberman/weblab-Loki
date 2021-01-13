@@ -4,6 +4,7 @@ import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 import Game from "./pages/Game.js";
+import Rules from "./pages/Rules.js";
 
 import "../utilities.css";
 
@@ -61,6 +62,7 @@ class App extends Component {
           />
 
           <Game path="/game" />
+          <Rules path="/rules" />
           <NotFound default />
         </Router>
       </>

@@ -10,7 +10,7 @@ class Card extends Component {
     return (
       <div>
         Card Suit: {this.props.suit} Value: {this.props.value} Unique.id: {this.props._id}
-        <button onClick={this.props.playerMove}>Move</button>
+        <button onClick={this.props.playerMove}>Place</button>
       </div>
     );
   }

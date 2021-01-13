@@ -9,7 +9,7 @@ class Game extends Component {
   render() {
     return (
       <div>
-        <h1>Welcome to the game! 10/10 UI design</h1>
+
         <p>Your deck</p>
 
         <Deck />

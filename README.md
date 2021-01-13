@@ -20,6 +20,8 @@
 ## TODO ITEMS IMMEDIATELY
 
 - Go to office hours to check with TA about api stuff
+- Make sure there is a win condition / lose condition (so the game doesn't crash)
+- Color code stuff to make the game easier to debug
 
 ## 1/12/2021
 
