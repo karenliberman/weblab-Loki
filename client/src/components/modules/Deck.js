@@ -2,20 +2,22 @@ import React, { Component } from "react";
 import Card from "./Card.js"
 
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
-const VALUES = ["A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const CARD_IN_HAND = 10;
+const NUM_DECKS = 2;
 
 class Deck extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        cards: this.newDeck(),
+        cards: this.multipleDeck(NUM_DECKS),
         hand: [],
         discard: []
     }
   }
 
   componentDidMount = () => {
+    this.shuffleDeck(this.state.cards);
     this.setState({hand: this.newHand()})
     console.log("you should see your hand");
   }
@@ -44,10 +46,21 @@ class Deck extends Component {
       return cur_deck;
   }
 
-  shuffleDeck = () => {
-    for (let i = this.deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i+1));
-        [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+  multipleDeck = (numDecks) => {
+    let cur_deck = [];
+    for (let i = 0; i < numDecks; i++) {
+      const deck = this.newDeck();
+      cur_deck = cur_deck.concat(deck);
+      
+    };
+
+    return cur_deck;
+  }
+
+  shuffleDeck = (deck) => {
+    for (let i = deck.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i+1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 }
 
