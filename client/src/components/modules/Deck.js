@@ -31,20 +31,20 @@ class Deck extends Component {
   } 
 
   newDeck = () => {
-      let cur_deck = [];
-      let tmp_id = 0;
-      for (let i = 0; i < SUITS.length; i++) {
-          for (let j = 0; j< VALUES.length; j++) {
-              let cur_card = {
-                  _id: tmp_id,
-                  suit: SUITS[i],
-                  value: VALUES[j]
-              }
-              tmp_id += 1;
-              cur_deck.push(cur_card);
-          }
-      }
-      return cur_deck;
+    let cur_deck = [];
+    let tmp_id = 0;
+    for (let i = 0; i < SUITS.length; i++) {
+        for (let j = 0; j< VALUES.length; j++) {
+            let cur_card = {
+                _id: tmp_id,
+                suit: SUITS[i],
+                value: VALUES[j]
+            }
+            tmp_id += 1;
+            cur_deck.push(cur_card);
+        }
+    }
+    return cur_deck;
   }
 
   multipleDeck = (numDecks) => {

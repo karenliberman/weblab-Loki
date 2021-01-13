@@ -17,6 +17,10 @@
 - Add server for a game for secure gameplay
 - Install Basic CSS function so the game at least looks presentable
 
+## TODO ITEMS IMMEDIATELY
+
+- Go to office hours to check with TA about api stuff
+
 ## 1/12/2021
 
 - Create a hand for the user
