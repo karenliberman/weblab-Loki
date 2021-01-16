@@ -17,6 +17,13 @@
 - Add server for a game for secure gameplay
 - Install Basic CSS function so the game at least looks presentable
 
+## Meeting 1/13/2021
+- Goals: Win condition / find tutorial to make the cards
+- Code more rules
+- Backend Todos: Server / Sockets
+- Fronted Todos: Drag and drop / Front end
+
+
 ## TODO ITEMS IMMEDIATELY
 
 - Go to office hours to check with TA about api stuff
