@@ -9,6 +9,7 @@ class NavBar extends Component {
   render() {
     return (
       <div>
+        <Link to="/"> Home Page </Link>
         <Link to='/game'> Game </Link>
         <Link to='/game'> Settings </Link>
         <Link to='/rules'> Rules </Link>

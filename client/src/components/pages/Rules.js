@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {get} from "../../utilities";
 
 class Rules extends Component {
   constructor(props) {
@@ -7,14 +8,15 @@ class Rules extends Component {
 
   render() {
     return (
-      <div>
-
-        <ol>
-          <li><h1> Put red cards (hearts, diamonds) before black ones (spades, clubs) </h1> </li>
-          <li><h1> More to come! ... </h1></li>
-        </ol>
-        
+    <div className="container">
+      <div className="rule-container">
+        Put red cards (hearts, diamonds) before black ones (spades, clubs)        
       </div>
+
+      <div className="rule-container">
+        More rules to come
+      </div>
+    </div>
     );
   }
 }

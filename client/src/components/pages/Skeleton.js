@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
+import { Link } from "@reach/router";
+
 
 import "../../utilities.css";
 import "./Skeleton.css";
@@ -36,8 +38,12 @@ class Skeleton extends Component {
             onFailure={(err) => console.log(err)}
           />
         )}
-        <h1>Good luck on your project :)</h1>
-        <h2> What we provide in this skeleton</h2>
+        <h1>Loki : The Game With No Rules</h1>
+        <h2> May the best mind win! </h2>
+
+        <Link to="/lobby"><button> Play Now </button></Link>
+        <br />
+        <button>Sign in with Google </button> 
         <ul>
           <li>Google Auth (Skeleton.js & auth.js)</li>
           <li>Socket Infrastructure (client-socket.js & server-socket.js)</li>

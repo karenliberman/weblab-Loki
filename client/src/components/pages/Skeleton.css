@@ -1,1 +1,51 @@
 /* Fill me in :) */
+
+/* Root */
+:root {
+    --primary: blue;
+    background-color: lightblue; /* Make this great again  */
+
+    --xs: 4px;
+    --s: 8px;
+    --m: 16px;
+    --l: 24px;
+
+}
+
+/* CARDS CSS SECTION NEEDS A CRAP TON OF CHANGES OMG 
+I recommend making a separate Card.css folder because a ton of changes are needed
+this is just a basic outline that you can follow (if you want) */
+
+.card {
+    padding: 20px 20px 20px 20px;
+    margin-top: 10px;
+    background-color: white;
+}
+.card-spades {
+    color: black;
+}
+
+.card-clubs {
+    color: black;
+}
+
+.card-hearts {
+    color: red;
+}
+
+.card-diamonds {
+    color: red;
+}
+
+/* RULES SECTION */
+.rule-container {
+    color: rgb(255, 0, 0);
+    background-color: grey;
+    border-radius: var(--xs);
+    margin-top: 20px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    padding: 20px 20px 20px 20px;
+
+}
+
