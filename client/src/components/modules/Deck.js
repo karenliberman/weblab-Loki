@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { post } from "../../utilities.js";
 import Card from "./Card.js"
 
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
@@ -10,15 +11,20 @@ class Deck extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        cards: this.multipleDeck(NUM_DECKS),
+        cards: [],
         hand: [],
         discard: []
     }
   }
 
   componentDidMount = () => {
-    this.shuffleDeck(this.state.cards);
-    this.setState({hand: this.newHand()})
+    const newDeck = this.multipleDeck(NUM_DECKS);
+    this.shuffleDeck(newDeck);
+    post("/api/deck", {cards: newDeck, action: "create"}).then((data) => {
+      this.setState({cards: data.cards});
+      this.setState({hand: this.newHand()})
+    }).then(() => post("/api/deck", {action: "delete"})); //later will be used when a player wins
+    
     console.log(this.state.cards);
   }
 
@@ -78,9 +84,11 @@ class Deck extends Component {
       let violationCard = newDeck.pop();
       newCards = newCards.concat(violationCard);
     }
-    this.setState({discard: newDiscardPile});
-    this.setState({cards: newDeck})
-    this.setState({hand: newCards})
+    post("/api/deck", {cards: newDeck, action: "update"}).then((deck) => {
+      this.setState({discard: newDiscardPile});
+      this.setState({cards: deck.cards})
+      this.setState({hand: newCards})
+    });
   }
 
   validMove = (index, cur_hand) => {
@@ -111,6 +119,19 @@ class Deck extends Component {
 
 
   render() {
+    let showDeck;
+    let showHand;
+    if (!this.state.deck) {
+      showDeck =  this.state.cards.map((card, index) => (
+        <Card value={card.value} suit={card.suit} _id={card._id}/>
+      ));
+      showHand = this.state.hand.map((card, index) => (
+        <Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => this.playerMove(index)}/>
+      ));
+    } else {
+      showDeck = (<p>wait</p>)
+      showHand = (<p>wait</p>)
+    }
     return (
 
       <div>
@@ -118,9 +139,7 @@ class Deck extends Component {
 
         hand
         <ol>
-        {this.state.hand.map((card, index) => (
-          <Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => this.playerMove(index)}/>
-        ))}
+        {showHand}
         </ol>
 
         
@@ -130,9 +149,7 @@ class Deck extends Component {
 
         Deck
         <ol>
-        {this.state.cards.map((card, index) => (
-          <Card value={card.value} suit={card.suit} _id={card._id}/>
-        ))}
+        {showDeck}
         </ol>
 
       </div>

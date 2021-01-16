@@ -1,4 +1,5 @@
 let io;
+// const logic = require("./logic.js")
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
@@ -9,6 +10,7 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
+  // logic.addUser();
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
