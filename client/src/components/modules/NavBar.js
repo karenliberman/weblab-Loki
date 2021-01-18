@@ -14,6 +14,7 @@ class NavBar extends Component {
         <Link to='/game'> Settings </Link>
         <Link to='/rules'> Rules </Link>
         <Link to='/game'> Profile </Link>
+        <Link to="/gameserver">GameServer</Link>
 
       </div>
     );

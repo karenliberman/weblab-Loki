@@ -1,4 +1,5 @@
-const { post } = require("../client/src/utilities");
+// const { post } = require("../client/src/utilities");
+const socketManager = require("./server-socket.js");
 
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
 const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -36,6 +37,7 @@ const multipleDeck = (numDecks) => {
       cur_deck = cur_deck.concat(deck);
       
     };
+    return cur_deck;
 };
 
 const shuffleDeck = (deck) => {
@@ -51,34 +53,30 @@ const get_color = (cur_card) => {
 
 const validMove = (index, cur_hand) => {
     //Rule 1 : reds before black
-
-    let cur_card = cur_hand[index];
+    let copy_hand = cur_hand.slice()
+    let cur_card = copy_hand[index];
     let color = get_color(cur_card);
 
-    cur_hand.splice(index, 1);
+    copy_hand.splice(index, 1);
 
     if (color === "black") {
       //there better be no reds in the deck
-      for(let i = 0; i < cur_hand.length; i++) {
-        let check = cur_hand[i]
+      for(let i = 0; i < copy_hand.length; i++) {
+        let check = copy_hand[i]
 
         if (get_color(check) === "red") {
           return false;
         }
       }
     };
+
+    return true;
 };
 
-const checkWin = () => {
-    Object.keys(gameState.players).forEach((key) => {
-        const hand = gameState.players[key];
-
-        if (hand.length === 0) {
-            gameState.winner = key;
-            return true
+const checkWin = (hand) => {
+    if (hand.length === 0) {
+        return true
         };
-
-    })
     return false
 };
 
@@ -88,42 +86,45 @@ const gameState = {
     players: {},
     hand: [],
     deck: [],
-    stack: [],
+
 }
 
-const addPlayer = () => {
-    gameState.deck = multipleDeck(NUM_DECKS);
-    shuffleDeck(gameState.deck);
-    gameState.hand = newHand(gameState.deck);
-    post("/api/deck", {cards: gameState.deck, action: "create"});
-}
+// const addPlayer = () => {
+//     gameState.deck = multipleDeck(NUM_DECKS);
+//     // shuffleDeck(gameState.deck);
+//     gameState.hand = newHand(gameState.deck);
+//     socketManager.getIo().emit(gameState);
+// }
 
 
-const playerMove = (index, id) => {
-    let hand = gameState.players[id];
-    let deck = gameState.deck
+const playerMove = (index, hand, deck) => {
+    let newHand = hand.slice();
+    let newDeck = deck.slice();
 
-    if (validMove(index, hand)) {
-        let removedCard = hand.splice(index, 1);
-        deck = deck.concat(removedCard);
+    if (validMove(index, newHand)) {
+        let removedCard = newHand.splice(index, 1);
+        newDeck = newDeck.concat(removedCard);
     } else {
         console.log("Rule 1 Violation");
-        let violationCard = deck.pop();
-        hand = hand.concat(violationCard);
+        let violationCard = newDeck.pop();
+        newHand = newHand.concat(violationCard);
     };
 
-    checkWin();
+    const winner =  checkWin(newHand);
 
-    post("/api/deck", {cards: gameState.deck, action: "update"});
+
+    return([newHand, newDeck, winner]);
+
 };
 
 const removePlayer = (id) => {
-    delete gameState.players[id];
+    delete gameState.deck;
+    delete gameState.hand;
 };
 
 module.exports = {
     gameState,
     playerMove,
-    addPlayer,
+    // addPlayer,
     removePlayer,
 };

@@ -6,6 +6,7 @@ import NavBar from "./modules/NavBar.js";
 import Game from "./pages/Game.js";
 import Rules from "./pages/Rules.js";
 import Lobby from "./pages/Lobby.js";
+import GameServer from "./pages/ServerGame.js";
 
 import "../utilities.css";
 
@@ -65,6 +66,7 @@ class App extends Component {
           <Game path="/game" />
           <Rules path="/rules" />
           <Lobby path="/lobby" />
+          <GameServer userId={this.state.userId} path="/gameserver" />
           <NotFound default />
         </Router>
       </>

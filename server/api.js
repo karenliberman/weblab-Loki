@@ -12,6 +12,7 @@ const express = require("express");
 // import models so we can interact with the database
 const User = require("./models/user");
 const Deck = require("./models/deck");
+const Hand = require("./models/hand");
 
 // import authentication library
 const auth = require("./auth");
@@ -46,25 +47,57 @@ router.post("/initsocket", (req, res) => {
 router.post("/deck", (req, res) => {
   if (req.body.action === "create") {
     const deck = new Deck({
-      gameId: 1,
+      gameId: req.body.gameId,
       cards: req.body.cards
     });
-
     deck.save().then((data) => res.send(data)).catch((err) => console.log(err));
+
+    socketManager.getIo().emit("deck", deck);
   } else if (req.body.action === "update") {
-    Deck.findOne({}).then((deck) => {
+    Deck.findOne({gameId: req.body.gameId}).then((deck) => {
       deck.cards = req.body.cards;
-      deck.save().then((deck) => res.send(deck));
+      deck.save().then((deck) => res.send(deck)).catch((err) => console.log(err));
+
+      socketManager.getIo().emit("updateDeck", deck);
     })
   } else if (req.body.action === "delete") {
-    Deck.deleteOne({gameId: 1}).then((deck) => {
-      res.send(deck);
+    Deck.deleteOne({gameId: req.body.gameId}).then((deck) => {
+      res.send(deck)
     })
   }
 })
 
 router.get("/deck", (req, res) => {
-  Deck.find({}).then((deck) => res.send(deck))
+  Deck.find({gameId: req.query.gameId}).then((deck) => res.send(deck)).catch((err) => console.log(err))
+})
+
+router.post("/hand", (req, res) => {
+  if (req.body.action === "create") {
+    const hand = new Hand({
+      gameId: req.body.gameId,
+      cards: req.body.cards,
+      playerId: req.user._id,
+    });
+
+    hand.save().then((data) => res.send(data)).catch((err) => console.log(err));
+
+    socketManager.getIo().emit("hand", hand);
+  } else if (req.body.action === "update") {
+    Hand.findOne({gameId: req.body.gameId, playerId: req.user._id}).then((hand) => {
+      hand.cards = req.body.cards;
+      hand.save().then((deck) => res.send(deck)).catch((err) => console.log(err));
+
+      socketManager.getIo().emit("updateHand", hand);
+    })
+  } else if (req.body.action === "delete") {
+    Hand.deleteOne({gameId: req.body.gameId, playerId: req.user._id}).then((deck) => {
+      res.send(deck)
+    })
+  }
+})
+
+router.get("/hand", (req, res) => {
+  Hand.find({gameId: req.query.gameId, playerId: req.user._id}).then((deck) => res.send(deck)).catch((err) => console.log(err))
 })
 
 // anything else falls to this "not found" case
