@@ -7,26 +7,47 @@ const get_color = (cur_card) => {
 };
 
 const validMove = (index, cur_hand) => {
-    //Rule 1 : reds before black
-    let copy_hand = cur_hand.slice()
-    let cur_card = copy_hand[index];
-    let color = get_color(cur_card);
-
-    copy_hand.splice(index, 1);
-
-    if (color === "black") {
-      //there better be no reds in the deck
-      for(let i = 0; i < copy_hand.length; i++) {
-        let check = copy_hand[i]
-
-        if (get_color(check) === "red") {
-          return false;
-        }
-      }
-    };
-
-    return true;
+  return rule2(index, cur_hand);
 };
+
+/* framework for implementing more rules */
+const rule1 = (index, cur_hand) => {
+  let copy_hand = cur_hand.slice()
+  let cur_card = copy_hand[index];
+  let color = get_color(cur_card);
+
+  copy_hand.splice(index, 1);
+
+  if (color === "black") {
+    //there better be no reds in the deck
+    for(let i = 0; i < copy_hand.length; i++) {
+      let check = copy_hand[i]
+
+      if (get_color(check) === "red") {
+        return false;
+      }
+    }
+  };
+
+  return true;
+}
+
+
+const rule2 = (index, cur_hand) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+  let card_value = cur_card.value;
+  copy_hand.splice(index, 1);
+
+
+  for(let i = 0; i< copy_hand.length; i++) {
+    let check = copy_hand[i].value;
+    if (VALUES.indexOf(check) > VALUES.indexOf(card_value)) {
+      return false
+    }
+  }
+  return true
+}
 
 const newCard = () => {
     const id = uuidv4();
@@ -51,6 +72,7 @@ const playerMove = (index, hand, deck) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
+    console.log("hello world");
     if (validMove(index, newHand)) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
