@@ -47,7 +47,12 @@ module.exports = {
           const newHand = newState[0];
           const newDeck = newState[1];
           const winner = newState[2];
-          io.emit("update", newHand, newDeck, winner);
+          
+          if (winner) {
+            io.emit("winner", `${user._id} has won the game!`);
+          } else {
+            io.emit("update", newHand, newDeck, user);
+          }
         };
       });
     });

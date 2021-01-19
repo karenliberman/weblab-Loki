@@ -56,7 +56,7 @@ class DeckServer extends Component {
         <br/>
 
 
-        Deck
+        Discard Pile
         <ol>
         {this.state.cards.map((card, index) => (<Card value={card.value} suit={card.suit} _id={card._id}/>))}
         </ol>

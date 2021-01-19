@@ -50,21 +50,23 @@ router.post("/deck", (req, res) => {
   if (req.body.action === "create") {
     const deck = new Deck({
       gameId: req.body.gameId,
-      cards: req.body.cards
+      cards: req.body.cards,
+      userId: req.user._id,
     });
     deck.save().then((data) => res.send(data)).catch((err) => console.log(err));
 
     socketManager.getIo().emit("deck", deck);
   } else if (req.body.action === "update") {
-    Deck.findOne({gameId: req.body.gameId}).then((deck) => {
+    Deck.findOne({gameId: req.body.gameId, userId: req.user._id}).then((deck) => {
       deck.cards = req.body.cards;
       deck.save().then((deck) => res.send(deck)).catch((err) => console.log(err));
 
       socketManager.getIo().emit("updateDeck", deck);
     })
   } else if (req.body.action === "delete") {
-    Deck.deleteOne({gameId: req.body.gameId}).then((deck) => {
-      res.send(deck)
+    Deck.deleteOne({gameId: req.body.gameId, userId: req.user._id}).then((deck) => {
+      res.send(deck);
+
     })
   }
 })
@@ -92,8 +94,9 @@ router.post("/hand", (req, res) => {
       socketManager.getIo().emit("updateHand", hand);
     })
   } else if (req.body.action === "delete") {
-    Hand.deleteOne({gameId: req.body.gameId, playerId: req.user._id}).then((deck) => {
-      res.send(deck)
+    Hand.deleteOne({gameId: req.body.gameId, playerId: req.user._id}).then((hand) => {
+      res.send(hand);
+
     })
   }
 })

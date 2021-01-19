@@ -16,7 +16,7 @@ class GameCreate extends Component {
     this.state = {
         cards: [],
         hand: [],
-        winner: null,
+        winner: false,
     }
   }
 
@@ -30,17 +30,20 @@ class GameCreate extends Component {
 
     post("/api/hand", {cards: newHand, gameId: "1", action: "create"});
 
-    socket.on("update", async (newHand, newDeck, winner) => {
+    socket.on("update", async (newHand, newDeck, user) => {
+      console.log(user._id, this.props.userId);
+      if (user._id === this.props.userId) {
         await Promise.all([
         post("/api/deck", {cards: newDeck, gameId: "1", action: "update"}),
         post("/api/hand", {cards: newHand, gameId: "1", action: "update"}),
         ]);
-        if (winner) {
-          this.setState({winner: "you won"});
-          post("/api/deck", { gameId: "1", action: "delete"});
-          post("/api/hand", { gameId: "1", action: "delete"});
-        };
+      };
+    })
 
+    socket.on("winner", (message) => {
+      this.setState({winner: message});
+      post("/api/deck", { gameId: "1", action: "delete"});
+      post("/api/hand", { gameId: "1", action: "delete"});
     })
 
   }
@@ -108,16 +111,15 @@ class GameCreate extends Component {
 
   render() {
     let showGame;
-    if (!this.state.deck) {
+    if (!this.state.winner) {
         showGame =  this.props.userId && (<DeckServer winner={this.state.winner} />);
     } else {
-        showGame = (<p>wait</p>);
+        showGame = (<p>{this.state.winner}</p>);
     };
     return (
 
       <div>
-          <p>{this.state.winner}</p>
-          {this.props.userId && (<DeckServer winner={this.state.winner} />)}
+          {showGame}
       </div>
     );
   }
