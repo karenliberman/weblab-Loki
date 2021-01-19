@@ -31,7 +31,6 @@ class GameCreate extends Component {
     post("/api/hand", {cards: newHand, gameId: "1", action: "create"});
 
     socket.on("update", async (newHand, newDeck, user) => {
-      console.log(user._id, this.props.userId);
       if (user._id === this.props.userId) {
         await Promise.all([
         post("/api/deck", {cards: newDeck, gameId: "1", action: "update"}),
@@ -40,10 +39,11 @@ class GameCreate extends Component {
       };
     })
 
-    socket.on("winner", (message) => {
-      this.setState({winner: message});
-      post("/api/deck", { gameId: "1", action: "delete"});
-      post("/api/hand", { gameId: "1", action: "delete"});
+    socket.on("winner", (message, user) => {
+      if (user._id === this.props.userId);
+        this.setState({winner: message});
+        post("/api/deck", { gameId: "1", action: "delete"});
+        post("/api/hand", { gameId: "1", action: "delete"});
     })
 
   }

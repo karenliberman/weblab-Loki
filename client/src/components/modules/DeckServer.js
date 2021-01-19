@@ -19,12 +19,10 @@ class DeckServer extends Component {
   componentDidMount = () => {
     socket.on("deck", (deck) => {
       this.setState({cards: deck.cards});
-      console.log(deck.cards);
     });
 
     socket.on("hand", (hand) => {
       this.setState({hand: hand.cards});
-      console.log(hand.cards);
     });
 
     socket.on("updateDeck", (deck) => {

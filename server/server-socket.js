@@ -49,7 +49,8 @@ module.exports = {
           const winner = newState[2];
           
           if (winner) {
-            io.emit("winner", `${user._id} has won the game!`);
+            const message = `${user._id} has won the game!`
+            io.emit("winner", message, user);
           } else {
             io.emit("update", newHand, newDeck, user);
           }
