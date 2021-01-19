@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "../pages/Skeleton.css";
+
 
 class Card extends Component {
   constructor(props) {
@@ -8,10 +10,9 @@ class Card extends Component {
   render() {
     return (
       <li>
-      <div className={`card-${this.props.suit} card`} >
-        Card Suit: {this.props.suit} Value: {this.props.value} Unique.id: {this.props._id}
-        <button onClick={this.props.playerMove}>Place</button>
-      </div>
+      <div className="cardContainer"> 
+          <div className={"cardSetting " + this.props.suit + this.props.value} onClick={this.props.playerMove}></div>
+        </div>
       </li>
     );
   }
