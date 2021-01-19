@@ -3,7 +3,7 @@
 /* Root */
 :root {
     --primary: blue;
-    background-color: lightblue; /* Make this great again  */
+    --background-color: lightblue; /* Make this great again  */
 
     --xs: 4px;
     --s: 8px;

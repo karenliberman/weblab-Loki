@@ -1,0 +1,12 @@
+.NavBar-container {
+    padding: 20px 10px;
+    background-color: goldenrod;
+}
+
+.Nav-link, .Nav-link:visited {
+    text-decoration: none;
+    color: white;
+    opacity: 0.5;
+    padding-right: 20px;
+
+}

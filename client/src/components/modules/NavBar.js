@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
+import GoogleLogin, { GoogleLogout } from "react-google-login";
+const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+
+
+import "./NavBar.css";
 
 class NavBar extends Component {
   constructor(props) {
@@ -8,14 +13,28 @@ class NavBar extends Component {
 
   render() {
     return (
-      <div>
-        <Link to="/"> Home Page </Link>
-        <Link to='/game'> Game </Link>
-        <Link to='/game'> Settings </Link>
-        <Link to='/rules'> Rules </Link>
-        <Link to='/game'> Profile </Link>
-        <Link to="/gameserver">GameServer</Link>
-
+      <div className="NavBar-container">
+        <Link to="/" className="Nav-link"> Home Page </Link>
+        <Link to='/game' className="Nav-link"> Game </Link>
+        <Link to='/game' className="Nav-link"> Settings </Link>
+        <Link to='/rules' className="Nav-link"> Rules </Link>
+        <Link to='/game' className="Nav-link"> Profile </Link>
+        <Link to="/gameserver" className="Nav-link">GameServer</Link>
+        {this.props.userId ? (
+          <GoogleLogout
+            clientId={GOOGLE_CLIENT_ID}
+            buttonText="Logout"
+            onLogoutSuccess={this.props.handleLogout}
+            onFailure={(err) => console.log(err)}
+          />
+        ) : (
+          <GoogleLogin
+            clientId={GOOGLE_CLIENT_ID}
+            buttonText="Login"
+            onSuccess={this.props.handleLogin}
+            onFailure={(err) => console.log(err)}
+          />
+        )}
       </div>
     );
   }
