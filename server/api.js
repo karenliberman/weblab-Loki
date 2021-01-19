@@ -44,6 +44,8 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+// now deck is just the discard pile
 router.post("/deck", (req, res) => {
   if (req.body.action === "create") {
     const deck = new Deck({

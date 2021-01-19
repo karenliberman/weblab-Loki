@@ -1,4 +1,5 @@
 let io;
+let game;
 const logic = require("./logic.js")
 
 const userToSocketMap = {}; // maps user ID to socket object
@@ -25,12 +26,12 @@ const addUser = (user, socket) => {
 const removeUser = (user, socket) => {
   if (user) delete userToSocketMap[user._id];
   delete socketToUserMap[socket.id];
-  logic.removePlayer();
 };
 
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);
+    game = io.of("/gameserver");
 
     io.on("connection", (socket) => {
       console.log(`socket has connected ${socket.id}`);
@@ -38,6 +39,7 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
       });
+      // Listens for any card placement done by the client
       socket.on("move", (index, hand, deck) => {
         const user = getUserFromSocketID(socket.id);
         if (user) {
@@ -49,6 +51,24 @@ module.exports = {
         };
       });
     });
+    // socket for games and lobbies
+    // game.on("connection", (socket) => {
+    //   game.emit("hi", "hello");
+    //   console.log("A player has joined!");
+    //   game.on("disconnect", (reason) => {
+    //     console.log("A player has disconnected!")
+    //   });
+    //   game.on("move", (index, hand, deck) => {
+    //     const user = getUserFromSocketID(socket.id);
+    //     if (user) {
+    //       const newState = logic.playerMove(index, hand, deck);
+    //       const newHand = newState[0];
+    //       const newDeck = newState[1];
+    //       const winner = newState[2];
+    //       game.emit("update", newHand, newDeck, winner);
+    //     };
+    //   });
+    // });
   },
 
   addUser: addUser,
