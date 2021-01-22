@@ -7,10 +7,11 @@ import Game from "./pages/Game.js";
 import Rules from "./pages/Rules.js";
 import Lobby from "./pages/Lobby.js";
 import GameServer from "./pages/ServerGame.js";
+import LobbyRoom from "./pages/LobbyRoom.js";
 
 import "../utilities.css";
 
-import { socket } from "../client-socket.js";
+import { socket, join, test } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 
@@ -69,7 +70,8 @@ class App extends Component {
 
           <Game path="/game" />
           <Rules path="/rules" />
-          <Lobby path="/lobby" />
+          <Lobby join={() => join()} test={() => test()} path="/lobby" />
+          <LobbyRoom join={() => join()} test={() => test()} path="/lobby/:roomId" />
           <GameServer userId={this.state.userId} path="/gameserver" />
           <NotFound default />
         </Router>

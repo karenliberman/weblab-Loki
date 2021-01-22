@@ -4,10 +4,34 @@ const logic = require("./logic.js")
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
+const rooms = {};
 
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const addUsertoRoom = (user, room) => {
+  if (rooms[room]) {
+    if (!(user._id in rooms[room])) {
+      rooms[room] = rooms[room].push(user._id);
+    };
+  } else {
+    console.log("ayuda");
+    rooms[room] = [user._id];
+  }
+};
+
+const removeUserfromRoom = (user, room) => {
+  if (rooms[room].length > 1) {
+    if (user._id in rooms) {
+      rooms[room] = rooms[room].filter(item => item !== user._id);
+    };
+  } else {
+    console.log("hididid")
+    delete rooms[room];
+  }
+};
+
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
@@ -38,10 +62,51 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+        console.log("xdxdxdxxd")
       });
+
       // Listens for any card placement done by the client
+      
+    });
+    // listens for any message from the client inside game and lobby
+    game.on("connection", (socket) => {
+      // leaving rooms
+      socket.on("disconnect", (reason) => {
+        let socketid = socket.id;
+        socketid = socketid.replace("/gameserver#", "");
+
+        const user = getUserFromSocketID(socketid);
+
+        removeUserfromRoom(user, "1");
+        socket.leave("1");
+        console.log("leave", rooms["1"], user._id)
+      });
+
+      // testing purposes
+      socket.on("test", (test) => {
+        console.log(test);
+        game.to("1").emit("testping", "testping");
+      })
+
+      // for joining/creating room
+      socket.on("join", (room) => {
+        let socketid = socket.id;
+        socketid = socketid.replace("/gameserver#", "");
+
+        const user = getUserFromSocketID(socketid);
+
+        addUsertoRoom(user, "1");
+        socket.join("1");
+        console.log("join", rooms["1"][0], user._id);
+      });
+
+      // use for playing the game
       socket.on("move", (index, hand, deck) => {
-        const user = getUserFromSocketID(socket.id);
+        let socketid = socket.id;
+        socketid = socketid.replace("/gameserver#", "");
+
+        const user = getUserFromSocketID(socketid);
+
         if (user) {
           const newState = logic.playerMove(index, hand, deck);
           const newHand = newState[0];
@@ -50,9 +115,9 @@ module.exports = {
           
           if (winner) {
             const message = `${user._id} has won the game!`
-            io.emit("winner", message, user);
+            game.emit("winner", message);
           } else {
-            io.emit("update", newHand, newDeck, user);
+            game.to(socket.id).emit("update", newHand, newDeck);
           }
         };
       });
