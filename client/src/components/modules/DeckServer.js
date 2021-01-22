@@ -3,6 +3,7 @@ import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import Card from "./Card.js"
 import { move } from "../../client-socket.js"
+import "./Game.css";
 
 
 class DeckServer extends Component {
@@ -45,9 +46,9 @@ class DeckServer extends Component {
       <div>
 
         hand
-        <ol>
+        <div className = "handContainer">
         {this.state.hand.map((card, index) => (<Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
-        </ol>
+        </div>
 
         
         <br/>
