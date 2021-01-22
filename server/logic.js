@@ -6,8 +6,13 @@ const get_color = (cur_card) => {
     return cur_card.suit==="spades" || cur_card.suit==="clubs" ? "black" : "red";
 };
 
-const validMove = (index, cur_hand) => {
-  return rule2(index, cur_hand);
+const validMove = (index, cur_hand) => { //add rule_index here
+  let rule_index = 1;
+  if(rule_index == 0) {
+    return rule1(index, cur_hand);
+  } else {
+    return rule2(index, cur_hand);
+  }
 };
 
 /* framework for implementing more rules */
