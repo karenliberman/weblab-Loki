@@ -15,11 +15,11 @@ class NavBar extends Component {
     return (
       <div className="NavBar-container">
         <Link to="/" className="Nav-link"> Home Page </Link>
-        <Link to='/game' className="Nav-link"> Game </Link>
-        <Link to='/game' className="Nav-link"> Settings </Link>
+        {/*<Link to='/game' className="Nav-link"> Game </Link>
+        <Link to='/game' className="Nav-link"> Settings </Link>*/}
         <Link to='/rules' className="Nav-link"> Rules </Link>
         <Link to='/game' className="Nav-link"> Profile </Link>
-        <Link to="/gameserver" className="Nav-link">GameServer</Link>
+        <Link to="/gameserver" className="Nav-link">Game</Link>
         <Link to="/lobby" className="Nav-link"> Lobby </Link>
         {this.props.userId ? (
           <GoogleLogout

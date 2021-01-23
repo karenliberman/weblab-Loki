@@ -9,6 +9,7 @@ class ServerGame extends Component {
   render() {
     return (
       <div>
+        <h2> reload the page to see cards </h2>
 
         <p>Your deck</p>
 

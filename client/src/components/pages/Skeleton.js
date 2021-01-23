@@ -27,10 +27,10 @@ class Skeleton extends Component {
         <div class="u-textCenter">
 
           <h1>Loki : The Game With No Rules</h1>
-          <h2> May the best mind win! </h2>
+          <h2> May the best mind win!</h2>
           <div class="form-box box-shadow">
-            <Link to="/lobby"><button class="btn second"> Play Now </button></Link>
-            <button class="btn first">Sign in with Google </button> 
+            <Link to="/gameserver"><button class="btn second"> Play Now </button></Link>
+            {/*<button class="btn first">Sign in with Google </button>  */}
           </div>
         </div>
       </>

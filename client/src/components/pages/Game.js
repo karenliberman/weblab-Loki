@@ -9,10 +9,10 @@ class Game extends Component {
   render() {
     return (
       <div>
-
         <p>Your deck</p>
 
         <Deck />
+
       </div>
     );
   }

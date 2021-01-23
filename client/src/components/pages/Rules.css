@@ -1,0 +1,18 @@
+body {
+    background: url(../../assets/blackboard.jpg) no-repeat center center fixed;
+    --webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.rule-container {
+    color: white;
+    background-color:  #006039;
+    border-radius: var(--xs);
+    margin-top: 20px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    padding: 20px 20px 20px 20px;
+
+}

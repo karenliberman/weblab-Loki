@@ -26,6 +26,7 @@ class GameCreate extends Component {
     // this.shuffleDeck(newDeck);
     const newHand = this.newRandomHand();
     // this is now just the discard pile
+    const newRule = this.newRandomRule();
     post("/api/deck", {cards: newDeck, gameId: "1", action: "create"});
 
     post("/api/hand", {cards: newHand, gameId: "1", action: "create"});
@@ -54,6 +55,10 @@ class GameCreate extends Component {
       hand.push(newCard);
     }
     return hand;
+  }
+
+  newRandomRule = () => {
+    return Math.round(Math.random());
   }
 
   newHand = (deck) => {
