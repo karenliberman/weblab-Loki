@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Cards.css";
+import {Draggable} from 'react-beautiful-dnd';
 
 
 class Card extends Component {
@@ -8,10 +9,22 @@ class Card extends Component {
   }
 
   render() {
+    console.log(this.props._id);
     return (
       
-          <div className={"cardSetting " + this.props.suit + this.props.value} onClick={this.props.playerMove}></div>
-    
+      <Draggable draggableId={this.props._id} index={this.props.index}>
+        
+        {(provided) => (
+
+        <div 
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            className={"cardSetting " + this.props.suit + this.props.value} 
+            onClick={this.props.playerMove}
+            >hello</div>
+        )}
+      </Draggable>
     );
   }
 }
