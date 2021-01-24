@@ -19,8 +19,12 @@ class NavBar extends Component {
         <Link to='/game' className="Nav-link"> Settings </Link>*/}
         <Link to='/rules' className="Nav-link"> Rules </Link>
         <Link to='/game' className="Nav-link"> Profile </Link>
+<<<<<<< HEAD
         <Link to="/gameserver" className="Nav-link">Game</Link>
         <Link to="/lobby" className="Nav-link"> Lobby </Link>
+=======
+        <Link to="/gameserver" className="Nav-link">GameServer</Link>
+>>>>>>> parent of 3db432c... third api update
         {this.props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
