@@ -15,7 +15,11 @@
 */
 
 /* TODO: REPLACE WITH YOUR OWN FONT! */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
+
+/* 'https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap' */
+/* 'https://fonts.googleapis.com/css2?family=Neucha&display=swap' */
+
+@import url('https://fonts.googleapis.com/css2?family=Texturina&display=swap');
 
 :root {
   --primary: #396dff;
@@ -34,7 +38,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Crimson Text', serif;
+  font-family: 'Texturina', serif;
   font-weight: 300;
 }
 

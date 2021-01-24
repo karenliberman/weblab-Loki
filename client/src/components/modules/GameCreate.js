@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { socket } from "../../client-socket.js";
+import { gamesocket } from "../../client-socket.js";
 import DeckServer from "./DeckServer.js";
 import { post } from "./../../utilities.js";
 
@@ -31,29 +31,26 @@ class GameCreate extends Component {
     console.log("Rule", newRule);
     this.setState({rule: newRule}); // Hacky code
 
-    post("/api/deck", {cards: newDeck, gameId: "1", action: "create"}); //change
+    post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "create"}); //change
 
-    post("/api/hand", {cards: newHand, gameId: "1", action: "create"}); //change
+    post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "create"}); //change
 
-    socket.on("update", async (newHand, newDeck, user) => {
-      if (user._id === this.props.userId) {
-        await Promise.all([
-        post("/api/deck", {cards: newDeck, gameId: "1", action: "update"}),
-        post("/api/hand", {cards: newHand, gameId: "1", action: "update"}),
-        ]);
-      };
+    gamesocket.on("update", async (newHand, newDeck) => {
+      await Promise.all([
+      post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "update"}),
+      post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "update"}),
+      ]);
     })
 
-    socket.on("winner", (message, user) => {
-      if (user._id === this.props.userId);
-        this.setState({winner: message});
-        post("/api/deck", { gameId: "1", action: "delete"});
-        post("/api/hand", { gameId: "1", action: "delete"});
+    gamesocket.on("winner", (message, user) => {
+      this.setState({winner: message});
+      post("/api/deck", { gameId: this.props.gameId, action: "delete"});
+      post("/api/hand", { gameId: this.props.gameId, action: "delete"});
     })
 
   }
   componentWillUnmount = () => {
-    socket.removeAllListeners();
+    gamesocket.removeAllListeners();
   }
   newRandomHand = () => {
     let hand = [];

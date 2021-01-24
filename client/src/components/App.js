@@ -71,7 +71,7 @@ class App extends Component {
           <Game path="/game" />
           <Rules path="/rules" />
           <Lobby join={() => join()} test={() => test()} path="/lobby" />
-          <LobbyRoom leave={() => leave()} test={() => test()} path="/lobby/:roomId" />
+          <LobbyRoom leave={() => leave()} test={() => test()} userId={this.state.userId} path="/lobby/:roomId" />
           <GameServer userId={this.state.userId} path="/gameserver" />
           <NotFound default />
         </Router>

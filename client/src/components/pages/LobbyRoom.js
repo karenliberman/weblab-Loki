@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { gamesocket } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import { test, leave} from "../../client-socket.js";
+import GameCreate from "../modules/GameCreate.js";
 
 
 class Lobby extends Component {
@@ -9,6 +10,7 @@ class Lobby extends Component {
     super(props);
     this.state = {
       isJoined: null,
+      pageStatus: "waiting room",
     }
   }
 
@@ -30,23 +32,38 @@ class Lobby extends Component {
   }
 
   render() {
+    if (this.state.isJoined) {
+      if (this.state.pageStatus === "waiting room") {
+        return (
+          <>
+            <div>
+              This is the lobby! Yay!!!
+              <button onClick={() => test(this.props.roomId)}> test </button>
+              <Link to="/">
+                <button onClick={() => leave(this.props.roomId)}> leave </button>
+              </Link>
+              <button onClick={() => this.setState({ pageStatus: "game" })} > Start Game </button>
+            </div>
+          </>
+        );
+      } else if (this.state.pageStatus === "game") {
+        return (
+          <div>
+            <h2> reload the page to see cards </h2>
+
+            <p>Your deck</p>
+
+            {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} />)}
+          </div>
+        );
+      }
+    };
+
     return (
       <div>
-        {this.state.isJoined ? (<div>
-          This is the lobby! Yay!!!
-          <button onClick={() => test(this.props.roomId)}> test </button>
-          <Link to="/">
-            <button onClick={() => leave(this.props.roomId)}> leave </button>
-          </Link>
-        </div>) : (
-          <div>
-            Not joined yet!
-          </div>
-        )}
-        
-        
+        Not joined yet!
       </div>
-    );
+    )
   }
 }
 

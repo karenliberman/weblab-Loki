@@ -145,6 +145,8 @@ module.exports = {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
         console.log('hi');
 
+        const room = userToRoom[user._id];
+
         if (user) {
           console.log("Move received")
           const newState = logic.playerMove(index, hand, deck, rule);
@@ -154,9 +156,9 @@ module.exports = {
           
           if (winner) {
             const message = `${user._id} has won the game!`
-            io.emit("winner", message, user);
+            game.to(room).emit("winner", message);
           } else {
-            io.emit("update", newHand, newDeck, user);
+            game.to(socket.id).emit("update", newHand, newDeck);
           }
         };
       });
