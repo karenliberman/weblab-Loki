@@ -4,6 +4,7 @@ import { get, post } from "../../utilities.js";
 import Card from "./Card.js"
 import { move } from "../../client-socket.js"
 import "./Game.css";
+import "./Cards.css";
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
 
@@ -15,6 +16,7 @@ class DeckServer extends Component {
         cards: [],
         hand: [],
         winner: null,
+        placedCard: "placeCard",
 
     }
   }
@@ -69,10 +71,24 @@ class DeckServer extends Component {
     
     return (
 
-      <div>
+      <div >
 
         <DragDropContext onDragEnd={this.onDragEnd}
         >
+
+        Target
+        <div className="gameTable">
+        <Droppable droppableId={"targetContainer"} direction="horizontal">
+        {(provided) => (
+        <div className = "cardPile" ref={provided.innerRef} {...provided.droppableProps}>
+          <div className={"cardSetting " + this.state.placedCard}> </div>
+        </div>
+        )}
+        </Droppable>
+        </div>
+        <br/>
+        <br/>
+
         <Droppable droppableId={"handContainer"} direction="horizontal">
         {(provided) => (
 
@@ -97,18 +113,9 @@ class DeckServer extends Component {
         )}
         </Droppable>
         
-        <br/>
-        <br/>
         
-        Target
-        <Droppable droppableId={"targetContainer"} direction="horizontal">
-        {(provided) => (
-        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.cards.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
-        {provided.placeholder}
-        </div>
-        )}
-        </Droppable>
+        
+        
         </DragDropContext>
       </div>
     );
