@@ -9,7 +9,7 @@ class Card extends Component {
   }
 
   render() {
-    console.log(this.props._id);
+    // console.log(this.props._id);
     return (
       
       <Draggable draggableId={this.props._id} index={this.props.index}>
