@@ -143,6 +143,7 @@ module.exports = {
       // use for playing the game
       socket.on("move", (index, hand, deck) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
+        console.log('hi');
 
         if (user) {
           const newState = logic.playerMove(index, hand, deck);

@@ -49,7 +49,7 @@ class GameCreate extends Component {
 
   }
   componentWillUnmount = () => {
-    gamesocket.removeAllListeners();
+    socket.removeAllListeners();
   }
   newRandomHand = () => {
     let hand = [];
