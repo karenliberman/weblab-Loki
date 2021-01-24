@@ -76,7 +76,6 @@ const playerMove = (index, hand, deck, rule) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
-    console.log("hello world");
     if (validMove(index, newHand, rule)) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);

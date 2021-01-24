@@ -51,6 +51,9 @@ class GameCreate extends Component {
     })
 
   }
+  componentWillUnmount = () => {
+    gamesocket.removeAllListeners();
+  }
   newRandomHand = () => {
     let hand = [];
     for (let i=0; i < CARD_IN_HAND; i++) {

@@ -22,6 +22,7 @@ class DeckServer extends Component {
   componentDidMount = () => {
     socket.on("deck", (deck) => {
       this.setState({cards: deck.cards});
+      console.log("this should only log once")
     });
 
     socket.on("hand", (hand) => {
@@ -35,6 +36,13 @@ class DeckServer extends Component {
     socket.on("updateHand", (hand) => {
       this.setState({hand: hand.cards})
     });
+  }
+
+  componentWillUnmount = () => {
+    socket.removeAllListeners("deck");
+    socket.removeAllListeners("hand");
+    socket.removeAllListeners("updateDeck");
+    socket.removeAllListeners("updateHand");
   }
 
   onDragEnd = result => {

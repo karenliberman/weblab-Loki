@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "../../utilities.css"
 import { gamesocket } from "../../client-socket.js";
 import { Link } from "@reach/router";
+import CreateLobby from "../modules/CreateLobby.js";
 
 
 class Lobby extends Component {
@@ -9,10 +9,14 @@ class Lobby extends Component {
     super(props);
   }
 
+  componentDidMount = () => {
+  }
+
+
   render() {
     return (
       <div>
-          This is the lobby! Yay!!!
+        <CreateLobby />
       </div>
     );
   }

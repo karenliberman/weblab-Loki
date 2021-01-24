@@ -6,8 +6,22 @@ socket.on("connect", () => {
   post("/api/initsocket", { socketid: socket.id });
 });
 
-export const gamesocket = socketIOClient("/gameserver")
+export const gamesocket = socketIOClient("/game")
 
 export const move = (index, hand, deck, rule) => [
-  gamesocket.emit("move", index, hand, deck, rule)
+  socket.emit("move", index, hand, deck, rule)
 ]
+
+export const join = (room) => {
+  gamesocket.emit("join", room);
+  gamesocket.removeAllListeners();
+};
+
+export const test = (room) => {
+  gamesocket.emit("test", "testingifworks", room)
+};
+
+export const leave = (room) => {
+  gamesocket.emit("leave", room);
+  gamesocket.removeAllListeners();
+}
