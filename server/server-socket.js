@@ -101,7 +101,7 @@ module.exports = {
       });
 
       // use for playing the game
-      socket.on("move", (index, hand, deck) => {
+      socket.on("move", (index, hand, deck, rule) => {
         let socketid = socket.id;
         socketid = socketid.replace("/gameserver#", "");
 

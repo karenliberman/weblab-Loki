@@ -8,8 +8,8 @@ socket.on("connect", () => {
 
 export const gamesocket = socketIOClient("/gameserver")
 
-export const move = (index, hand, deck) => [
-  gamesocket.emit("move", index, hand, deck)
+export const move = (index, hand, deck, rule) => [
+  gamesocket.emit("move", index, hand, deck, rule)
 ]
 
 export const join = () => {
