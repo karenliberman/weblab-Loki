@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../utilities.css"
 import { gamesocket } from "../../client-socket.js";
 import { Link } from "@reach/router";
 

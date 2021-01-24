@@ -20,6 +20,7 @@ class NavBar extends Component {
         <Link to='/rules' className="Nav-link"> Rules </Link>
         <Link to='/game' className="Nav-link"> Profile </Link>
         <Link to="/gameserver" className="Nav-link">Game</Link>
+        <Link to="/lobby" className="Nav-link"> Lobby </Link>
         {this.props.userId ? (
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
