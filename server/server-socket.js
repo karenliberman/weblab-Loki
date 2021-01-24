@@ -74,7 +74,6 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
       });
-
       // Listens for any card placement done by the client
       
     });
@@ -153,9 +152,9 @@ module.exports = {
           
           if (winner) {
             const message = `${user._id} has won the game!`
-            game.emit("winner", message);
+            io.emit("winner", message, user);
           } else {
-            game.to(socket.id).emit("update", newHand, newDeck);
+            io.emit("update", newHand, newDeck, user);
           }
         };
       });

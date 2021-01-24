@@ -7,7 +7,6 @@ import Game from "./pages/Game.js";
 import Rules from "./pages/Rules.js";
 import Lobby from "./pages/Lobby.js";
 import GameServer from "./pages/ServerGame.js";
-import LobbyRoom from "./pages/LobbyRoom.js";
 
 import "../utilities.css";
 
