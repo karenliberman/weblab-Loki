@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { gamesocket } from "../../client-socket.js";
 import { Link } from "@reach/router";
+import CreateLobby from "../modules/CreateLobby.js";
 
 
 class Lobby extends Component {
@@ -9,18 +10,13 @@ class Lobby extends Component {
   }
 
   componentDidMount = () => {
-    gamesocket.on("testping", (test) => console.log("xddddd"));
   }
+
 
   render() {
     return (
       <div>
-        This is the lobby! Yay!!!
-        <button onClick={this.props.join}> button </button>
-        <button onClick={this.props.test}> test </button>
-        <Link to="/rules/">
-          <button onClick={this.props.test}> rules </button>
-        </Link>
+        <CreateLobby />
       </div>
     );
   }

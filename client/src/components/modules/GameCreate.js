@@ -48,6 +48,9 @@ class GameCreate extends Component {
     })
 
   }
+  componentWillUnmount = () => {
+    gamesocket.removeAllListeners();
+  }
   newRandomHand = () => {
     let hand = [];
     for (let i=0; i < CARD_IN_HAND; i++) {
@@ -117,7 +120,7 @@ class GameCreate extends Component {
   render() {
     let showGame;
     if (!this.state.winner) {
-        showGame =  this.props.userId && (<DeckServer winner={this.state.winner} />);
+        showGame =  this.props.userId && (<DeckServer winner={this.state.winner}/>);
     } else {
         showGame = (<p>{this.state.winner}</p>);
     };

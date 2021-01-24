@@ -8,7 +8,7 @@ const get_color = (cur_card) => {
 
 const validMove = (index, cur_hand) => { //add rule_index here
   let rule_index = 1;
-  if(rule_index == 0) {
+  if(rule_index === 0) {
     return rule1(index, cur_hand);
   } else {
     return rule2(index, cur_hand);
@@ -77,7 +77,6 @@ const playerMove = (index, hand, deck) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
-    console.log("hello world");
     if (validMove(index, newHand)) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);

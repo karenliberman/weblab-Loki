@@ -13,6 +13,7 @@ const express = require("express");
 const User = require("./models/user");
 const Deck = require("./models/deck");
 const Hand = require("./models/hand");
+const Game = require("./models/game");
 
 // import authentication library
 const auth = require("./auth");
@@ -98,6 +99,18 @@ router.post("/hand", (req, res) => {
       res.send(hand);
 
     })
+  }
+});
+
+router.post("/game", (req, res) => {
+  if (req.body.action === "create") {
+    const game = new Game({
+      gameId: req.body.gameId,
+      users: [req.user._id],
+      options: req.body.options,
+    });
+
+    game.save().then((data) => res.send(data)).catch((err) => console.log(err));
   }
 })
 

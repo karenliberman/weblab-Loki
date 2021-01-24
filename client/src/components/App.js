@@ -11,7 +11,7 @@ import LobbyRoom from "./pages/LobbyRoom.js";
 
 import "../utilities.css";
 
-import { socket, join, test } from "../client-socket.js";
+import { socket, join, test, leave } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 
@@ -71,7 +71,7 @@ class App extends Component {
           <Game path="/game" />
           <Rules path="/rules" />
           <Lobby join={() => join()} test={() => test()} path="/lobby" />
-          <LobbyRoom join={() => join()} test={() => test()} path="/lobby/:roomId" />
+          <LobbyRoom leave={() => leave()} test={() => test()} path="/lobby/:roomId" />
           <GameServer userId={this.state.userId} path="/gameserver" />
           <NotFound default />
         </Router>
