@@ -16,11 +16,11 @@ class Card extends Component {
         
         {(provided) => (
 
-        <div 
+         <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className={"cardSetting " + this.props.suit + this.props.value} 
+            className={"cardSetting " + this.props.suit + this.props.value + " sexyCard"} 
             onClick={this.props.playerMove}
             >hello</div>
         )}

@@ -28,6 +28,7 @@ class GameCreate extends Component {
     const newHand = this.newRandomHand();
     // this is now just the discard pile
     const newRule = this.newRandomRule(); //get us the new rule
+    console.log("Rule", newRule);
     this.setState({rule: newRule}); // Hacky code
 
     post("/api/deck", {cards: newDeck, gameId: "1", action: "create"}); //change

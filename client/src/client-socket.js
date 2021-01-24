@@ -8,9 +8,10 @@ socket.on("connect", () => {
 
 export const gamesocket = socketIOClient("/game")
 
-export const move = (index, hand, deck, rule) => [
+export const move = (index, hand, deck, rule) => {
+  console.log("Move detected");
   socket.emit("move", index, hand, deck, rule)
-]
+}
 
 export const join = (room) => {
   gamesocket.emit("join", room);

@@ -7,6 +7,7 @@ const get_color = (cur_card) => {
 };
 
 const validMove = (index, cur_hand, rule_index) => { //add rule_index here
+  console.log("Checks move")
   if(rule_index == 0) {
     return rule1(index, cur_hand);
   } else {
