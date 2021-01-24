@@ -6,8 +6,7 @@ const get_color = (cur_card) => {
     return cur_card.suit==="spades" || cur_card.suit==="clubs" ? "black" : "red";
 };
 
-const validMove = (index, cur_hand) => { //add rule_index here
-  let rule_index = 1;
+const validMove = (index, cur_hand, rule_index) => { //add rule_index here
   if(rule_index == 0) {
     return rule1(index, cur_hand);
   } else {
@@ -73,12 +72,12 @@ const checkWin = (hand) => {
     return false
 };
 
-const playerMove = (index, hand, deck) => {
+const playerMove = (index, hand, deck, rule) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
     console.log("hello world");
-    if (validMove(index, newHand)) {
+    if (validMove(index, newHand, rule)) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
     } else {

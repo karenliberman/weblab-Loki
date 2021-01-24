@@ -10,7 +10,7 @@ class Card extends Component {
   render() {
     return (
       
-          <div className={"cardSetting " + this.props.suit + this.props.value} onClick={this.props.playerMove}></div>
+          <div className={"cardSetting " + this.props.suit + this.props.value + " sexyCard"} onClick={this.props.playerMove}></div>
     
     );
   }

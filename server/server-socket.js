@@ -40,10 +40,10 @@ module.exports = {
         removeUser(user, socket);
       });
       // Listens for any card placement done by the client
-      socket.on("move", (index, hand, deck) => {
+      socket.on("move", (index, hand, deck, rule) => {
         const user = getUserFromSocketID(socket.id);
         if (user) {
-          const newState = logic.playerMove(index, hand, deck);
+          const newState = logic.playerMove(index, hand, deck, rule);
           const newHand = newState[0];
           const newDeck = newState[1];
           const winner = newState[2];

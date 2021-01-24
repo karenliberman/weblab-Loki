@@ -17,6 +17,7 @@ class GameCreate extends Component {
         cards: [],
         hand: [],
         winner: false,
+        rule: undefined,
     }
   }
 
@@ -26,10 +27,12 @@ class GameCreate extends Component {
     // this.shuffleDeck(newDeck);
     const newHand = this.newRandomHand();
     // this is now just the discard pile
-    const newRule = this.newRandomRule();
-    post("/api/deck", {cards: newDeck, gameId: "1", action: "create"});
+    const newRule = this.newRandomRule(); //get us the new rule
+    this.setState({rule: newRule}); // Hacky code
 
-    post("/api/hand", {cards: newHand, gameId: "1", action: "create"});
+    post("/api/deck", {cards: newDeck, gameId: "1", action: "create"}); //change
+
+    post("/api/hand", {cards: newHand, gameId: "1", action: "create"}); //change
 
     socket.on("update", async (newHand, newDeck, user) => {
       if (user._id === this.props.userId) {
@@ -117,7 +120,7 @@ class GameCreate extends Component {
   render() {
     let showGame;
     if (!this.state.winner) {
-        showGame =  this.props.userId && (<DeckServer winner={this.state.winner} />);
+        showGame =  this.props.userId && (<DeckServer winner={this.state.winner} rule={this.state.rule}/>);
     } else {
         showGame = (<p>{this.state.winner}</p>);
     };

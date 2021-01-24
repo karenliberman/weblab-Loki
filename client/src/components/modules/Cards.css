@@ -27,7 +27,9 @@
   border-color: black;
 }
 
-
+.sexyCard:hover {
+  border: yellow 2px solid;
+} 
 
 
 /*copious amount of hardcoding to relate each different card to their image*/

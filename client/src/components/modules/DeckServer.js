@@ -47,7 +47,7 @@ class DeckServer extends Component {
 
         hand
         <div className = "handContainer">
-        {this.state.hand.map((card, index) => (<Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
+        {this.state.hand.map((card, index) => (<Card value={card.value} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards, this.props.rule)}/>))}
         </div>
 
         
