@@ -4,34 +4,10 @@ const logic = require("./logic.js")
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
-const rooms = {};
 
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
-
-const addUsertoRoom = (user, room) => {
-  if (rooms[room]) {
-    if (!(user._id in rooms[room])) {
-      rooms[room] = rooms[room].push(user._id);
-    };
-  } else {
-    console.log("ayuda");
-    rooms[room] = [user._id];
-  }
-};
-
-const removeUserfromRoom = (user, room) => {
-  if (rooms[room].length > 1) {
-    if (user._id in rooms) {
-      rooms[room] = rooms[room].filter(item => item !== user._id);
-    };
-  } else {
-    console.log("hididid")
-    delete rooms[room];
-  }
-};
-
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
@@ -62,9 +38,7 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
-        console.log("xdxdxdxxd")
       });
-
       // Listens for any card placement done by the client
       
     });
@@ -115,9 +89,9 @@ module.exports = {
           
           if (winner) {
             const message = `${user._id} has won the game!`
-            game.emit("winner", message);
+            io.emit("winner", message, user);
           } else {
-            game.to(socket.id).emit("update", newHand, newDeck);
+            io.emit("update", newHand, newDeck, user);
           }
         };
       });
@@ -130,7 +104,7 @@ module.exports = {
     //     console.log("A player has disconnected!")
     //   });
     //   game.on("move", (index, hand, deck) => {
-    //     const user = getUserFromSocketID(socket.id);
+    //     consst user = getUserFromSocketID(socket.id);
     //     if (user) {
     //       const newState = logic.playerMove(index, hand, deck);
     //       const newHand = newState[0];

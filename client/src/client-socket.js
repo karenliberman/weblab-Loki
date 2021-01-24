@@ -11,11 +11,3 @@ export const gamesocket = socketIOClient("/gameserver")
 export const move = (index, hand, deck, rule) => [
   gamesocket.emit("move", index, hand, deck, rule)
 ]
-
-export const join = () => {
-  gamesocket.emit("join", "1");
-};
-
-export const test = () => {
-  gamesocket.emit("test", "testingifworks")
-}

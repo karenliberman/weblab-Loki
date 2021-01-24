@@ -9,19 +9,10 @@ class Lobby extends Component {
     super(props);
   }
 
-  componentDidMount = () => {
-    gamesocket.on("testping", (test) => console.log("xddddd"));
-  }
-
   render() {
     return (
       <div>
-        This is the lobby! Yay!!!
-        <button onClick={this.props.join}> button </button>
-        <button onClick={this.props.test}> test </button>
-        <Link to="/rules/">
-          <button onClick={this.props.test}> rules </button>
-        </Link>
+          This is the lobby! Yay!!!
       </div>
     );
   }
