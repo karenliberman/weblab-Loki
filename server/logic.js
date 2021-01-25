@@ -104,4 +104,5 @@ const violation = (hand) => {
 
 module.exports = {
     playerMove,
+    violation,
 };

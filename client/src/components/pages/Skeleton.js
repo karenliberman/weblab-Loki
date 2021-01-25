@@ -24,12 +24,12 @@ class Skeleton extends Component {
   render() {
     return (
       <>
-        <div class="u-textCenter">
+        <div className="u-textCenter">
 
           <h1>Loki : The Game With No Rules</h1>
           <h2> May the best mind win!</h2>
-          <div class="form-box box-shadow">
-            <Link to="/lobby"><button class="btn second"> Play Now </button></Link>
+          <div className="form-box box-shadow">
+            <Link to="/lobby"><button className="btn second"> Play Now </button></Link>
             {/*<button class="btn first">Sign in with Google </button>  */}
           </div>
         </div>

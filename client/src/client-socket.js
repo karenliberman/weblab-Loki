@@ -30,4 +30,8 @@ export const test = (room) => {
 export const leave = (room) => {
   gamesocket.emit("leave", room);
   gamesocket.removeAllListeners();
+};
+
+export const changeStatus = (room, page) => {
+  gamesocket.emit("changeStatus", room, page);
 }

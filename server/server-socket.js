@@ -12,19 +12,50 @@ const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
+const getListofPlayers = (room) => {
+  try {
+    const players = Object.keys(rooms[room]);
+    return players;
+  } catch {
+    console.log("big error")
+  }
+};
+
 const getUserFromFilterSocketID = (socketid, filter) => {
   const filteredSocketId = socketid.replace(filter, "");
   
   return getUserFromSocketID(filteredSocketId);
 };
 
+const changeReadyStatus = (room, users, status) => {
+  for (let i = 0; i < users.length; i++) {
+    rooms[room][users[i]].isReady = status;
+  };
+};
+
+const checkIfAllReady = (room) => {
+  const players = getListofPlayers(room);
+  for (let i = 0; i < players.length; i++) {
+    if (!rooms[room][players[i]].isReady) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const changeHost = (room, user, status) => {
+  rooms[room][user._id].isHost = status;
+};
+
+
 const addUsertoRoom = (user, room) => {
   if (rooms[room]) {
     if (!(user._id in rooms[room])) {
       const userData = {
-        user: user,
+        name: user.name,
         isHost: false,
         isTurn: false,
+        isReady: true,
       }
 
       rooms[room][user._id] = userData,
@@ -34,12 +65,13 @@ const addUsertoRoom = (user, room) => {
     rooms[room] = {};
     
     const userData = {
-      user: user,
+      name: user.name,
       isHost: false,
       isTurn: false,
+      isReady: true,
     }
 
-    rooms[room][user._id] = userData,
+    rooms[room][user._id] = userData;
     userToRoom[user._id] = room;
   }
 };
@@ -107,8 +139,17 @@ module.exports = {
 
       socket.on("leave", (room) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
-
         removeUserfromRoom(user, room);
+
+        // Changes the host if the previous host leaves
+        if (rooms[room]) {
+          const players = getListofPlayers(room);
+          const newHost = players[0];
+          const newSocketHost = getSocketFromUserID(newHost)
+
+          changeHost(room, newHost, true);
+          game.to(newSocketHost).emit("newHost", true);
+        }
 
         socket.leave(room);
         console.log(`Player has left the lobby ${room}`, rooms[room])
@@ -122,10 +163,10 @@ module.exports = {
           addUsertoRoom(user, room);
           
           // make the user the host of the lobby
-          rooms[room][user._id].isHost = true;
+          changeHost(room, user, true);
 
           socket.join(room);
-          console.log(`A player has joined room ${room}`, rooms[room][user._id]);
+          console.log(`A player has joined room ${room}`, rooms[room]);
           console.log(userToRoom[user._id])
         } else if (userToRoom[user._id] === room) {
           socket.join(room);
@@ -141,7 +182,7 @@ module.exports = {
         }
       });
 
-      socket.on("checkStatus", (room) => {
+      socket.on("checkJoined", (room) => {
         let status;
         const user = getUserFromFilterSocketID(socket.id, "/game#");
 
@@ -184,12 +225,39 @@ module.exports = {
 
       });
 
+      socket.on("changeStatus", (room, page) => {
+        const user = getUserFromFilterSocketID(socket.id, "/game#");
+
+        if (page === "lobby") {
+          game.to(socket.id).emit("statusChange", page, null);
+          changeReadyStatus(room, [user._id], true);
+        } else if (page === "game") {
+          if(checkIfAllReady(room)) {
+            game.to(room).emit("statusChange", page, null);
+            room[rooms][user._id].isTurn = true;
+          };
+        } else {
+          game.to(room).emit("statusChange", page, null);
+        };
+        console.log(room);
+      });
+
+      socket.on("checkHost", (room) => {
+        const user = getUserFromFilterSocketID(socket.id, "/game#")
+
+        if (rooms[room][user._id].isHost) {
+          game.to(socket.id).emit("newHost", true);
+        }
+      })
+
       // use for playing the game
       socket.on("move", (index, hand, deck, rule) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
 
         const room = userToRoom[user._id];
-        const numPlayers = Object.keys(rooms[room]).length
+
+        const players = getListofPlayers(room);
+        const numPlayers = players.length
         const checkifTurn = rooms[room][user._id].isHost;
 
         if (checkifTurn) {
@@ -201,15 +269,16 @@ module.exports = {
             const winner = newState[2];
 
             // Sets the next turn to the next player
-            const nextTurn = (Object.keys(rooms[room]).indexOf(user._id) + 1) % numPlayers;
-            const nextUser = Object.keys(rooms[room])[nextTurn];
+            const nextTurn = (players.indexOf(user._id) + 1) % numPlayers;
+            const nextUser = players[nextTurn];
 
             rooms[room][user._id].isTurn = false;
             rooms[room][nextUser].isTurn = true;
             
             if (winner) {
               const message = `${user._id} has won the game!`
-              game.to(room).emit("winner", message);
+              game.to(room).emit("statusChange", "winner", message);
+              changeReadyStatus(room, players, false);
             } else {
               game.to(socket.id).emit("update", newHand, newDeck);
             }

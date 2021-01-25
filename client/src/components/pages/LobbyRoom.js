@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { gamesocket } from "../../client-socket.js";
+import { gamesocket, changeStatus } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import { test, leave} from "../../client-socket.js";
 import GameCreate from "../modules/GameCreate.js";
@@ -10,12 +10,15 @@ class Lobby extends Component {
     super(props);
     this.state = {
       isJoined: null,
-      pageStatus: "waiting room",
+      pageStatus: "lobby",
+      host: false,
+      winner: null,
     }
   }
 
   componentDidMount = () => {
-    gamesocket.emit("checkStatus", this.props.roomId);
+    gamesocket.emit("checkHost", this.props.roomId);
+    gamesocket.emit("checkJoined", this.props.roomId);
 
     gamesocket.on("isJoined", (status) => {
       if (status) {
@@ -25,6 +28,14 @@ class Lobby extends Component {
       }
     })
     gamesocket.on("testping", (test) => console.log("xddddd", this.props.roomId));
+
+    gamesocket.on("statusChange", (status, winner) => {
+      this.setState({ pageStatus: status, winner: winner });
+    });
+
+    gamesocket.on("newHost", (isHost) => {
+      this.setState({ host: isHost });
+    });
   }
 
   componentWillUnmount = () => {
@@ -33,7 +44,7 @@ class Lobby extends Component {
 
   render() {
     if (this.state.isJoined) {
-      if (this.state.pageStatus === "waiting room") {
+      if (this.state.pageStatus === "lobby") {
         return (
           <>
             <div>
@@ -42,7 +53,7 @@ class Lobby extends Component {
               <Link to="/">
                 <button onClick={() => leave(this.props.roomId)}> leave </button>
               </Link>
-              <button onClick={() => this.setState({ pageStatus: "game" })} > Start Game </button>
+              {this.state.host && (<button onClick={() => changeStatus(this.props.roomId, "game")} > Start Game </button>)}
             </div>
           </>
         );
@@ -56,6 +67,15 @@ class Lobby extends Component {
             {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} />)}
           </div>
         );
+      } else if (this.state.pageStatus === "winner") {
+        return (
+          <div>
+            {this.state.winner}
+            <div>
+              <button onClick={() => changeStatus(this.props.roomId, "lobby")} > Return to Lobby </button>
+            </div>
+          </div>
+        )
       }
     };
 
