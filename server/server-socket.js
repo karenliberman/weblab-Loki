@@ -234,7 +234,7 @@ module.exports = {
         } else if (page === "game") {
           if(checkIfAllReady(room)) {
             game.to(room).emit("statusChange", page, null);
-            room[rooms][user._id].isTurn = true;
+            rooms[room][user._id].isTurn = true;
           };
         } else {
           game.to(room).emit("statusChange", page, null);
