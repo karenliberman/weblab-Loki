@@ -77,12 +77,11 @@ const addUsertoRoom = (user, room) => {
 };
 
 const removeUserfromRoom = (user, room) => {
+  console.log(Object.keys(rooms[room]));
   if (Object.keys(rooms[room]).length > 1) {
-    if (user._id in Object.keys(rooms[room])) {
-      console.log("there is still at least a person left")
-      delete rooms[room][user._id]
-      delete userToRoom[user._id]
-    };
+    console.log("there is still at least a person left")
+    delete rooms[room][user._id]
+    delete userToRoom[user._id]
   } else {
     console.log("hididid")
     delete rooms[room];
@@ -146,7 +145,7 @@ module.exports = {
         if (rooms[room]) {
           const players = getListofPlayers(room);
           const newHost = players[0];
-          const newSocketHost = getSocketFromUserID(newHost)
+          const newSocketHost = "/game#"+ getSocketFromUserID(newHost)
 
           changeHost(room, newHost, true);
           game.to(newSocketHost).emit("newHost", true);
