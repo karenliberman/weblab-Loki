@@ -45,7 +45,7 @@ const addUsertoRoom = (user, room) => {
 };
 
 const removeUserfromRoom = (user, room) => {
-  if (rooms[room].length > 1) {
+  if (Object.keys(rooms[room]).length > 1) {
     if (user._id in Object.keys(rooms[room])) {
       delete rooms[room][user._id]
       delete userToRoom[user._id]
