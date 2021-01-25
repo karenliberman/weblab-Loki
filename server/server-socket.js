@@ -147,7 +147,7 @@ module.exports = {
           const newHost = players[0];
           const newSocketHost = getSocketFromUserID(newHost)
 
-          changeHost(room, newHost, true);
+          // changeHost(room, newHost, true);
           game.to(newSocketHost).emit("newHost", true);
         }
 
@@ -271,6 +271,9 @@ module.exports = {
             // Sets the next turn to the next player
             const nextTurn = (players.indexOf(user._id) + 1) % numPlayers;
             const nextUser = players[nextTurn];
+
+            console.log(user._id, "this is the old turn");
+            console.log(nextUser, "this is the new turn");
 
             rooms[room][user._id].isTurn = false;
             rooms[room][nextUser].isTurn = true;
