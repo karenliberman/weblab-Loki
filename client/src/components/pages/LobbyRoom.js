@@ -10,15 +10,16 @@ class Lobby extends Component {
     super(props);
     this.state = {
       isJoined: null,
-      pageStatus: "lobby",
+      pageStatus: null,
       host: false,
       winner: null,
     }
   }
 
   componentDidMount = () => {
-    gamesocket.emit("checkHost", this.props.roomId);
     gamesocket.emit("checkJoined", this.props.roomId);
+    gamesocket.emit("checkHost", this.props.roomId);
+    
 
     gamesocket.on("isJoined", (status) => {
       if (status) {
@@ -30,6 +31,7 @@ class Lobby extends Component {
     gamesocket.on("testping", (test) => console.log("xddddd", this.props.roomId));
 
     gamesocket.on("statusChange", (status, winner) => {
+      console.log("hello");
       this.setState({ pageStatus: status, winner: winner });
     });
 

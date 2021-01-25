@@ -27,13 +27,12 @@ class GameCreate extends Component {
     // this.shuffleDeck(newDeck);
     const newHand = this.newRandomHand();
     // this is now just the discard pile
-    const newRule = this.newRandomRule(); //get us the new rule
-    console.log("Rule", newRule);
-    this.setState({rule: newRule}); // Hacky code
 
     post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "create"}); //change
 
     post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "create"}); //change
+
+    gamesocket.on("rules", (rules) => this.setState({ rule: rules}));
 
     gamesocket.on("update", async (newHand, newDeck) => {
       await Promise.all([
@@ -42,16 +41,12 @@ class GameCreate extends Component {
       ]);
     })
 
-    gamesocket.on("winner", (message, user) => {
-      this.setState({winner: message});
-      post("/api/deck", { gameId: this.props.gameId, action: "delete"});
-      post("/api/hand", { gameId: this.props.gameId, action: "delete"});
-    })
-
   }
   componentWillUnmount = () => {
     gamesocket.removeAllListeners("update");
     gamesocket.removeAllListeners("winner");
+    post("/api/deck", { gameId: this.props.gameId, action: "delete"});
+    post("/api/hand", { gameId: this.props.gameId, action: "delete"});
   }
   newRandomHand = () => {
     let hand = [];
@@ -60,10 +55,6 @@ class GameCreate extends Component {
       hand.push(newCard);
     }
     return hand;
-  }
-
-  newRandomRule = () => {
-    return Math.round(Math.random());
   }
 
   newHand = (deck) => {
