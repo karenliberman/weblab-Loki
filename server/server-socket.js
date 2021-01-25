@@ -79,6 +79,7 @@ const addUsertoRoom = (user, room) => {
 const removeUserfromRoom = (user, room) => {
   if (Object.keys(rooms[room]).length > 1) {
     if (user._id in Object.keys(rooms[room])) {
+      console.log("there is still at least a person left")
       delete rooms[room][user._id]
       delete userToRoom[user._id]
     };
@@ -147,7 +148,7 @@ module.exports = {
           const newHost = players[0];
           const newSocketHost = getSocketFromUserID(newHost)
 
-          // changeHost(room, newHost, true);
+          changeHost(room, newHost, true);
           game.to(newSocketHost).emit("newHost", true);
         }
 
@@ -258,7 +259,7 @@ module.exports = {
 
         const players = getListofPlayers(room);
         const numPlayers = players.length
-        const checkifTurn = rooms[room][user._id].isHost;
+        const checkifTurn = rooms[room][user._id].isTurn;
 
         if (checkifTurn) {
           if (user) {

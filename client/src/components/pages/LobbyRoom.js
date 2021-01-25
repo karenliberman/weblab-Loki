@@ -35,6 +35,7 @@ class Lobby extends Component {
 
     gamesocket.on("newHost", (isHost) => {
       this.setState({ host: isHost });
+      console.log("there is a new host");
     });
   }
 
