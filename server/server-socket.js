@@ -45,7 +45,7 @@ const checkIfAllReady = (room) => {
 };
 
 const changeHost = (room, socket, status) => {
-  rooms[room][socket.id].isHost = status;
+  rooms[room][socket].isHost = status;
 };
 
 const nextTurn = (room, socket) => {
