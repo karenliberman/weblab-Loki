@@ -44,8 +44,8 @@ const checkIfAllReady = (room) => {
   return true;
 };
 
-const changeHost = (room, socket, status) => {
-  rooms[room][socket].isHost = status;
+const changeHost = (room, socketid, status) => {
+  rooms[room][socketid].isHost = status;
 };
 
 const nextTurn = (room, socket) => {
@@ -189,7 +189,7 @@ module.exports = {
         addUsertoRoom(user, socket, room);
         
         // make the user the host of the lobby
-        changeHost(room, socket, true);
+        changeHost(room, socket.id, true);
 
         socket.join(room);
         console.log(`A player has joined room ${room}`, rooms[room]);
