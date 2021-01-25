@@ -13,10 +13,15 @@ export const move = (index, hand, deck, rule) => {
   gamesocket.emit("move", index, hand, deck, rule)
 }
 
-export const join = (room) => {
-  gamesocket.emit("join", room);
+export const createLobby = (room) => {
+  gamesocket.emit("createLobby", room);
   gamesocket.removeAllListeners();
 };
+
+export const joinLobby = (room) => {
+  gamesocket.emit("joinLobby", room);
+  gamesocket.removeAllListeners();
+}
 
 export const test = (room) => {
   gamesocket.emit("test", "testingifworks", room)

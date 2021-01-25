@@ -81,9 +81,7 @@ const playerMove = (index, hand, deck, rule) => {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
     } else {
-        console.log("Rule 1 Violation");
-        let violationCard = newCard();
-        newHand = newHand.concat(violationCard);
+        newHand = violation(newHand);
     };
 
     const winner =  checkWin(newHand);
@@ -92,6 +90,16 @@ const playerMove = (index, hand, deck, rule) => {
     return([newHand, newDeck, winner]);
 
 };
+
+const violation = (hand) => {
+  console.log("A rule has been violated!");
+  let newHand = hand.slice();
+  const violationCard = newCard();
+
+  newHand = newHand.concat(violationCard);
+  
+  return newHand;
+}
 
 
 module.exports = {
