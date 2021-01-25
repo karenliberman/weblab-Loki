@@ -104,11 +104,19 @@ const removeUserfromRoom = (socket) => {
   if (room) {
     if (rooms[room][socket.id].isTurn) {
       nextTurn(room, socket);
-    }
+    };
     if (Object.keys(rooms[room]).length > 2) {
-      console.log("there is still at least a person left")
-      delete rooms[room][socket.id]
-      delete socketToRoom[socket.id]
+      console.log("there is still at least a person left");
+      delete rooms[room][socket.id];
+      delete socketToRoom[socket.id];
+
+      // Changes the host if the previous host leaves
+      const playerSockets = getListofPlayers(room);
+      const newSocketHost = playerSockets[0];
+
+      changeHost(room, newSocketHost, true);
+      game.to(newSocketHost).emit("newHost", true);
+
     } else {
       console.log("the room has been deleted")
       delete rooms[room];
@@ -168,16 +176,6 @@ module.exports = {
       socket.on("leave", (room) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
         removeUserfromRoom(socket);
-
-        // Changes the host if the previous host leaves
-        if (rooms[room]) {
-          const playerSockets = getListofPlayers(room);
-          const newSocketHost = playerSockets[0];
-          const newHost = getUserFromFilterSocketID(newSocketHost);
-
-          changeHost(room, newSocketHost, true);
-          game.to(newSocketHost).emit("newHost", true);
-        }
 
         socket.leave(room);
         console.log(`Player has left the lobby ${room}`, rooms[room])
