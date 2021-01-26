@@ -42,6 +42,7 @@ class DeckServer extends Component {
 
     gamesocket.on("newLastCard", (card) => {
       this.setState({lastCard: card})
+      console.log(card);
     })
   }
 
@@ -62,12 +63,14 @@ class DeckServer extends Component {
     if (destination.droppableId== source.droppableId && destination.index == source.index) {
       return;
     }
+    const movingCard = this.state.hand[source.index];
     if (destination.droppableId == "targetContainer"){
       move(source.index, this.state.hand, this.state.cards, this.props.rule);
-      
+      this.setState({placedCard: movingCard.suit + movingCard.value});
+      this.state.hand.splice(source.index, 1);
       return;
     }
-    const movingCard = this.state.hand[source.index];
+    
     const cardHandBox = "handContainer";
     const newHand =  Array.from(this.state.hand)
     newHand.splice(source.index, 1);
