@@ -21,7 +21,7 @@
 
 width: 500px;
 height: 200px;
-display: block;
+display: flex;
 
 
 margin-left: auto;

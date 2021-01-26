@@ -92,6 +92,7 @@ class DeckServer extends Component {
 
         Target
         <div className="gameTable">
+
         <Droppable droppableId={"targetContainer"} direction="horizontal">
 
         {(provided, snapshot) => (
@@ -104,6 +105,11 @@ class DeckServer extends Component {
         </div>
         )}
         </Droppable>
+
+          <div>
+             {this.props.playerTurn}'s Turn
+          </div>
+
         </div>
         <br/>
         <br/>
