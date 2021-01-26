@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Router } from "@reach/router";
+// import { Router } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
@@ -67,12 +68,9 @@ class App extends Component {
             handleLogout={this.handleLogout}
             userId={this.state.userId}
           />
-
-          <Game path="/game" />
           <Rules path="/rules" />
-          <Lobby path="/lobby" userId={this.state.userId} />
-          <LobbyRoom leave={() => leave()} test={() => test()} userId={this.state.userId} path="/lobby/:roomId" />
-          <GameServer userId={this.state.userId} path="/gameserver" />
+          {this.state.userId ? (<Lobby userId={this.state.userId} path="/lobby" />) : (<Redirect from="/lobby" to="/" />)}
+          <LobbyRoom  leave={() => leave()} test={() => test()} userId={this.state.userId} path="/lobby/:roomId" />
           <NotFound default />
         </Router>
       </>

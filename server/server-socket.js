@@ -303,7 +303,7 @@ module.exports = {
             const newState = logic.playerMove(index, hand, deck, lastCard, rules);
             const newHand = newState[0];
             const newDeck = newState[1];
-            const newLastCard = newState[2];
+            const newLastCard = newState[2][0];
             const winner = newState[3];
 
             // Sets the next turn to the next player

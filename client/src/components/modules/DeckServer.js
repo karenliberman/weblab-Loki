@@ -17,7 +17,7 @@ class DeckServer extends Component {
         hand: [],
         winner: null,
         placedCard: "placeCard",
-        lastCard: undefined,
+        lastCard: "placeCard",
 
     }
   }
@@ -41,7 +41,7 @@ class DeckServer extends Component {
     });
 
     gamesocket.on("newLastCard", (card) => {
-      this.setState({lastCard: card})
+      this.setState({lastCard: card.suit+card.value})
       console.log(card);
     })
   }
@@ -99,7 +99,7 @@ class DeckServer extends Component {
         isDraggingOver={snapshot.isDraggingOver}
         >
 
-        <div className={"cardSetting " + this.state.placedCard}> </div>
+        <div className={"cardSetting " + this.state.lastCard}> </div>
 
         </div>
         )}

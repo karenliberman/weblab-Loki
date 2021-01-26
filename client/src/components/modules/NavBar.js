@@ -12,37 +12,38 @@ class NavBar extends Component {
   }
 
   render() {
-    return (      
-      
-      <div className="NavBar-container">
-        <Link to="/" className="Nav-link"> Home Page </Link>
-        <Link to='/rules' className="Nav-link"> Rules </Link>
-        <Link to='/rules' className="Nav-link"> Profile </Link>
+    return (
+      <>
+        <div className="NavBar-container">
+          <Link to="/" className="Nav-link"> Home Page </Link>
+          <Link to='/rules' className="Nav-link"> Rules </Link>
+          <Link to='/rules' className="Nav-link"> Profile </Link>
 
-        {/* {this.props.userId && (
-          <Link to="/gameserver" className="Nav-link">Game</Link>
-        )} */}
-        
-        {this.props.userId && (
-          <Link to='/lobby' className="Nav-link"> Lobby </Link>
-        )}
+          {/* {this.props.userId && (
+            <Link to="/gameserver" className="Nav-link">Game</Link>
+          )} */}
+          
+          {this.props.userId && (
+            <Link to='/lobby' className="Nav-link"> Lobby </Link>
+          )}
 
-        {this.props.userId ? (
-          <GoogleLogout
-            clientId={GOOGLE_CLIENT_ID}
-            buttonText="Logout"
-            onLogoutSuccess={this.props.handleLogout}
-            onFailure={(err) => console.log(err)}
-          />
-        ) : (
-          <GoogleLogin
-            clientId={GOOGLE_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={this.props.handleLogin}
-            onFailure={(err) => console.log(err)}
-          />
-        )}
-      </div>
+          {this.props.userId ? (
+            <GoogleLogout
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Logout"
+              onLogoutSuccess={this.props.handleLogout}
+              onFailure={(err) => console.log(err)}
+            />
+          ) : (
+            <GoogleLogin
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Login"
+              onSuccess={this.props.handleLogin}
+              onFailure={(err) => console.log(err)}
+            />
+          )}
+        </div>
+      </>
     );
   }
 }
