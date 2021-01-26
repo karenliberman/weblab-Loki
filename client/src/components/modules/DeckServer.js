@@ -67,6 +67,7 @@ class DeckServer extends Component {
     if (destination.droppableId == "targetContainer"){
       move(source.index, this.state.hand, this.state.cards, this.props.rule);
       this.setState({placedCard: movingCard.suit + movingCard.value});
+      this.state.hand.splice(source.index, 1);
       return;
     }
     
