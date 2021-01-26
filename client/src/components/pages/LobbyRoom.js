@@ -43,9 +43,32 @@ class LobbyRoom extends Component {
       console.log("there is a new host");
     });
 
-    gamesocket.on("newPlayer", (player) => this.setState((prevstate) => ({
-      players: prevstate.players.concat([player]),
-    })));
+    gamesocket.on("newPlayer", (user) => {
+      let isPlayer = true;
+      for(let i = 0; i < this.state.players.length; i++) {
+        if (this.state.players[i]._id === user._id) {
+          isPlayer = false;
+        };
+      };
+
+      if (isPlayer) {
+        this.setState((prevstate) => ({
+        players: prevstate.players.concat([{name: user.name, _id: user._id}])}))
+      };
+    });
+
+    gamesocket.on("deletePlayer", (user) => {
+      let copystate = {...this.state};
+      let oldPlayers = copystate.players;
+      newPlayers = oldPlayers.filter((player) => {
+        if (player._id !== user._id) {
+          return player;
+        };
+      });
+      this.setState({
+        players: newPlayers,
+      });
+    });
   }
 
   componentWillUnmount = () => {
@@ -53,12 +76,19 @@ class LobbyRoom extends Component {
   }
 
   render() {
-    const players = this.state.players;
+    let players;
+    if (this.state.players.length === 0) {
+      players = [];
+    } else {
+      players = this.state.players.map((player) => {
+        return player.name
+      })
+    }
 
     if (this.state.isJoined) {
       if (this.state.pageStatus === "lobby") {
         return (
-          <WaitingRoom roomId={this.props.roomId} players={this.state.players} host={this.state.host} />
+          <WaitingRoom roomId={this.props.roomId} players={players} host={this.state.host} />
         );
       } else if (this.state.pageStatus === "game") {
         return (

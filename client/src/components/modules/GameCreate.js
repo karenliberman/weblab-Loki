@@ -17,7 +17,7 @@ class GameCreate extends Component {
         cards: [],
         hand: [],
         winner: false,
-        rule: undefined,
+        lastCard: null,
     }
   }
 
@@ -33,18 +33,24 @@ class GameCreate extends Component {
     post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "create"}); //change
 
     gamesocket.on("rules", (rules) => this.setState({ rule: rules}));
+    gamesocket.on("newLastCard", (lastCard) => this.setState({ lastCard: lastCard }));
 
     gamesocket.on("update", async (newHand, newDeck) => {
       await Promise.all([
       post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "update"}),
       post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "update"}),
       ]);
+    });
+
+    gamesocket.on("nextUser", (user) => {
+      console.log(`Is ${user._id} turn to play!`)
     })
 
   }
   componentWillUnmount = () => {
     gamesocket.removeAllListeners("update");
-    gamesocket.removeAllListeners("winner");
+    gamesocket.removeAllListeners("rules");
+    gamesocket.removeAllListeners("newLastCard");
     post("/api/deck", { gameId: this.props.gameId, action: "delete"});
     post("/api/hand", { gameId: this.props.gameId, action: "delete"});
   }
@@ -114,7 +120,7 @@ class GameCreate extends Component {
     return (
 
       <div>
-          {this.props.userId && (<DeckServer winner={this.state.winner} rule={this.state.rule}/>)}
+          {this.props.userId && (<DeckServer winner={this.state.winner} lastCard={this.state.lastCard}/>)}
       </div>
     );
   }

@@ -15,7 +15,7 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const getListofPlayers = (room) => {
   try {
-    const players = Object.keys(rooms[room]).slice(1);
+    const players = Object.keys(rooms[room]).slice(3);
     return players;
   } catch (error) {
     console.log(error);
@@ -61,6 +61,8 @@ const nextTurn = (room, socket) => {
   rooms[room][socket.id].isTurn = false;
   rooms[room][nextUser].isTurn = true;
 
+  game.to(room).emit("nextUser", rooms[room][nextUser].user);
+
 }
 
 
@@ -68,8 +70,7 @@ const addUsertoRoom = (user, socket, room) => {
   if (rooms[room]) {
     if (!(socket.id in rooms[room])) {
       const userData = {
-        name: user.name,
-        _id: user._id,
+        user: user,
         isHost: false,
         isTurn: false,
         isReady: true,
@@ -82,11 +83,12 @@ const addUsertoRoom = (user, socket, room) => {
   } else {
     rooms[room] = {
       pageStatus: "lobby",
+      rules: [],
+      lastCard: null,
     };
     
     const userData = {
-      name: user.name,
-      _id: user._id,
+      user: user,
       isHost: true,
       isTurn: false,
       isReady: true,
@@ -96,6 +98,7 @@ const addUsertoRoom = (user, socket, room) => {
     userToRoom[user._id] = room;
     socketToRoom[socket.id] = room;
   }
+
 };
 
 const removeUserfromRoom = (socket) => {
@@ -103,10 +106,13 @@ const removeUserfromRoom = (socket) => {
   const user = getUserFromFilterSocketID(socket.id);
   if (room) {
     if (rooms[room][socket.id].isTurn) {
-      nextTurn(room, socket);
+    nextTurn(room, socket);
     };
-    if (Object.keys(rooms[room]).length > 2) {
+    if (Object.keys(rooms[room]).length > 4) {
       console.log("there is still at least a person left");
+      const oldUser = rooms[room][socket.id].user;
+      game.to(room).emit("deletePlayer", oldUser);
+
       delete rooms[room][socket.id];
       delete socketToRoom[socket.id];
 
@@ -190,10 +196,11 @@ module.exports = {
         changeHost(room, socket.id, true);
 
         socket.join(room);
-        game.to(room).emit("newPlayer", user.name);
+        game.to(room).emit("newPlayer", user);
         console.log(`A player has joined room ${room}`, rooms[room]);
       });
 
+      // for rejoin
       socket.on("checkJoined", (room) => {
         let status;
         const user = getUserFromFilterSocketID(socket.id, "/game#");
@@ -202,6 +209,8 @@ module.exports = {
           status = true;
           addUsertoRoom(user, socket, room);
           socket.join(room);
+
+          game.to(room).emit("newPlayer", user);
           
           const page = rooms[room].pageStatus;
           game.to(socket.id).emit("statusChange", page, null);
@@ -215,12 +224,17 @@ module.exports = {
       socket.on("joinLobby", (room) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#");
         if(rooms[room]) {
-          addUsertoRoom(user, socket, room);
-          socket.join(room);
+          // hardcoded maxPlayers to 8
+          if (getListofPlayers(rooms[room]).length < 8) {
+            addUsertoRoom(user, socket, room);
+            socket.join(room);
 
-          game.to(room).emit("newPlayer", user.name);
-          console.log(`A player has joined room ${room}`, rooms[room], user._id);
-          console.log(userToRoom[user._id])
+            game.to(room).emit("newPlayer", user);
+            console.log(`A player has joined room ${room}`, rooms[room], user._id);
+            console.log(userToRoom[user._id])
+          } else{
+            game.to(socket.id).emit("isJoined", false);
+          }
         } else {
           game.to(socket.id).emit("isJoined", false)
         };
@@ -233,8 +247,14 @@ module.exports = {
         } else if (page === "game") {
           if(checkIfAllReady(room)) {
             game.to(room).emit("statusChange", page, null);
+            // get rules
             const rules = logic.newRandomRule();
-            game.to(room).emit("rules", rules);
+            rooms[room].rules = rules;
+            // get first card to the stack
+            const lastCard = logic.newCard();
+            rooms[room].lastCard = lastCard;
+            game.to(room).emit("newLastCard", lastCard);
+            // starts game
             rooms[room][socket.id].isTurn = true;
             rooms[room].pageStatus = "game";
           };
@@ -253,21 +273,24 @@ module.exports = {
       })
 
       // use for playing the game
-      socket.on("move", (index, hand, deck, rule) => {
+      socket.on("move", (index, hand, deck) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
 
         const room = userToRoom[user._id];
 
         const players = getListofPlayers(room);
+        const rules = rooms[room].rules;
+        const lastCard = rooms[room].lastCard;
         const checkifTurn = rooms[room][socket.id].isTurn;
 
         if (checkifTurn) {
           if (user) {
             console.log("Move received")
-            const newState = logic.playerMove(index, hand, deck, rule);
+            const newState = logic.playerMove(index, hand, deck, lastCard, rules);
             const newHand = newState[0];
             const newDeck = newState[1];
-            const winner = newState[2];
+            const newLastCard = newState[2];
+            const winner = newState[3];
 
             // Sets the next turn to the next player
             nextTurn(room, socket);
@@ -275,10 +298,15 @@ module.exports = {
             if (winner) {
               const message = `${user._id} has won the game!`
               game.to(room).emit("statusChange", "winner", message);
+
+              // reset lobby values
               changeReadyStatus(room, players, false);
+              rooms[room].lastCard = null;
+              rooms[room].rules = [];
               rooms[room].pageStatus = "lobby";
             } else {
               game.to(socket.id).emit("update", newHand, newDeck);
+              game.to(room).emit("newLastCard", newLastCard);
             }
           };
         } else {

@@ -118,13 +118,15 @@ const checkWin = (hand) => {
     return false
 };
 
-const playerMove = (index, hand, deck, rule) => {
+const playerMove = (index, hand, deck, lastCard, rule) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
+    let newLastCard = lastCard;
 
     if (validMove(index, newHand, rule)) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
+        newLastCard = removedCard;
     } else {
         newHand = violation(newHand);
     };
@@ -132,7 +134,7 @@ const playerMove = (index, hand, deck, rule) => {
     const winner =  checkWin(newHand);
 
 
-    return([newHand, newDeck, winner]);
+    return([newHand, newDeck, newLastCard, winner]);
 
 };
 
@@ -151,4 +153,5 @@ module.exports = {
     playerMove,
     violation,
     newRandomRule,
+    newCard,
 };

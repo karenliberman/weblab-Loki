@@ -103,7 +103,7 @@ class DeckServer extends Component {
         {(provided) => (
 
         <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards, this.props.rule)}/>))}
+        {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
         {provided.placeholder}
         </div>
 
