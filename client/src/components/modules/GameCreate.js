@@ -17,7 +17,7 @@ class GameCreate extends Component {
         cards: [],
         hand: [],
         winner: false,
-        lastCard: null,
+        lastCard: undefined,
     }
   }
 
@@ -51,8 +51,8 @@ class GameCreate extends Component {
     gamesocket.removeAllListeners("update");
     gamesocket.removeAllListeners("rules");
     gamesocket.removeAllListeners("newLastCard");
-    post("/api/deck", { gameId: this.props.gameId, action: "delete"});
-    post("/api/hand", { gameId: this.props.gameId, action: "delete"});
+    post("/api/deck", {action: "delete"});
+    post("/api/hand", {action: "delete"});
   }
   newRandomHand = () => {
     let hand = [];

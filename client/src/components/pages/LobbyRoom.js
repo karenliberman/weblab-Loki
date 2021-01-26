@@ -5,6 +5,7 @@ import { test, leave} from "../../client-socket.js";
 import GameCreate from "../modules/GameCreate.js";
 import WaitingRoom from "../modules/WaitingRoom.js";
 import "./Rules.css";
+import { get, post } from "../../utilities.js";
 
 
 class LobbyRoom extends Component {
@@ -22,6 +23,7 @@ class LobbyRoom extends Component {
   componentDidMount = () => {
     gamesocket.emit("checkJoined", this.props.roomId);
     gamesocket.emit("checkHost", this.props.roomId);
+    gamesocket.emit("getPlayers", this.props.roomId);
     
 
     gamesocket.on("isJoined", (status) => {
@@ -43,7 +45,11 @@ class LobbyRoom extends Component {
       console.log("there is a new host");
     });
 
-    gamesocket.on("newPlayer", (user) => {
+    gamesocket.on("listPlayers", (players) => {
+      this.setState({ players: players});
+    })
+
+    gamesocket.on("newPlayer", async (user) => {
       let isPlayer = true;
       for(let i = 0; i < this.state.players.length; i++) {
         if (this.state.players[i]._id === user._id) {
@@ -52,7 +58,7 @@ class LobbyRoom extends Component {
       };
 
       if (isPlayer) {
-        this.setState((prevstate) => ({
+        await this.setState((prevstate) => ({
         players: prevstate.players.concat([{name: user.name, _id: user._id}])}))
       };
     });
@@ -60,7 +66,7 @@ class LobbyRoom extends Component {
     gamesocket.on("deletePlayer", (user) => {
       let copystate = {...this.state};
       let oldPlayers = copystate.players;
-      newPlayers = oldPlayers.filter((player) => {
+      let newPlayers = oldPlayers.filter((player) => {
         if (player._id !== user._id) {
           return player;
         };
@@ -72,6 +78,7 @@ class LobbyRoom extends Component {
   }
 
   componentWillUnmount = () => {
+    // gamesocket.emit("leave", this.props.roomId);
     gamesocket.removeAllListeners();
   }
 

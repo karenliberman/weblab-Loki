@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { socket } from "../../client-socket.js";
+import { socket, gamesocket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import Card from "./Card.js"
 import { move } from "../../client-socket.js"
@@ -17,6 +17,7 @@ class DeckServer extends Component {
         hand: [],
         winner: null,
         placedCard: "placeCard",
+        lastCard: undefined,
 
     }
   }
@@ -38,6 +39,10 @@ class DeckServer extends Component {
     socket.on("updateHand", (hand) => {
       this.setState({hand: hand.cards})
     });
+
+    gamesocket.on("newLastCard", (card) => {
+      this.setState({lastCard: card})
+    })
   }
 
   componentWillUnmount = () => {
@@ -45,6 +50,7 @@ class DeckServer extends Component {
     socket.removeAllListeners("hand");
     socket.removeAllListeners("updateDeck");
     socket.removeAllListeners("updateHand");
+    gamesocket.removeAllListeners("newLastCard");
   }
 
   onDragEnd = result => {
@@ -123,7 +129,20 @@ class DeckServer extends Component {
         )}
         </Droppable>
         
-        
+        <br/>
+        <br/>
+
+        {/* Last Card Played
+        {this.state.lastCard &&
+          (<Droppable droppableId={"discardedContainer"} direction="horizontal">
+          {(provided) => (
+          <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
+          {this.state.lastCard.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
+          {provided.placeholder}
+          </div>
+          )}
+          </Droppable>) */}
+        {/* } */}
         
         
         </DragDropContext>

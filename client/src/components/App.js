@@ -70,7 +70,7 @@ class App extends Component {
 
           <Game path="/game" />
           <Rules path="/rules" />
-          <Lobby path="/lobby" />
+          <Lobby path="/lobby" userId={this.state.userId} />
           <LobbyRoom leave={() => leave()} test={() => test()} userId={this.state.userId} path="/lobby/:roomId" />
           <GameServer userId={this.state.userId} path="/gameserver" />
           <NotFound default />

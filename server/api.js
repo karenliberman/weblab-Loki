@@ -23,6 +23,7 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
+const game = require("./models/game");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -65,7 +66,7 @@ router.post("/deck", (req, res) => {
       socketManager.getSocketFromUserID(req.user._id).emit("updateDeck", deck);
     })
   } else if (req.body.action === "delete") {
-    Deck.deleteOne({gameId: req.body.gameId, userId: req.user._id}).then((deck) => {
+    Deck.deleteMany({userId: req.user._id}).then((deck) => {
       res.send(deck);
 
     })
@@ -95,24 +96,37 @@ router.post("/hand", (req, res) => {
       socketManager.getSocketFromUserID(req.user._id).emit("updateHand", hand);
     })
   } else if (req.body.action === "delete") {
-    Hand.deleteOne({gameId: req.body.gameId, playerId: req.user._id}).then((hand) => {
+    Hand.deleteMany({playerId: req.user._id}).then((hand) => {
       res.send(hand);
 
-    })
-  }
+    })};
 });
 
-router.post("/game", (req, res) => {
-  if (req.body.action === "create") {
-    const game = new Game({
-      gameId: req.body.gameId,
-      users: [req.user._id],
-      options: req.body.options,
-    });
+// router.post("/game", (req, res) => {
+//   if (req.body.action === "create") {
+//     const game = new Game({
+//       gameId: req.body.gameId,
+//       players: [req.body.players],
+//     });
 
-    game.save().then((data) => res.send(data)).catch((err) => console.log(err));
-  }
-})
+//     game.save().then((data) => res.send(data)).catch((err) => console.log(err));
+//   } else if (req.body.action === "update") {
+//     game.findOne({gameId: req.body.gameId}).then((game) => {
+//       game.players = req.body.players;
+//       game.save().catch((err) =>  console.log(err));
+//     })
+//   } else if (req.body.action === "delete") {
+//     Game.deleteMany({gameId: req.body.gameId}).cathc((err) => console.log(err))
+//   }
+// });
+
+// router.get("/game", (req, res) => {
+//   Game.findOne({gameId: req.query.gameId}).then((data) => {
+//     if (!data) {
+//       res.send(data.players)
+//     }
+//   }).catch((err) => console.log(err));
+// })
 
 router.get("/hand", (req, res) => {
   Hand.find({gameId: req.query.gameId, playerId: req.user._id}).then((deck) => res.send(deck)).catch((err) => console.log(err))

@@ -111,6 +111,7 @@ const removeUserfromRoom = (socket) => {
     if (Object.keys(rooms[room]).length > 4) {
       console.log("there is still at least a person left");
       const oldUser = rooms[room][socket.id].user;
+      delete userToRoom[oldUser._id];
       game.to(room).emit("deletePlayer", oldUser);
 
       delete rooms[room][socket.id];
@@ -124,11 +125,12 @@ const removeUserfromRoom = (socket) => {
       game.to(newSocketHost).emit("newHost", true);
 
     } else {
-      console.log("the room has been deleted")
+      console.log("the room has been deleted");
+      const oldUser = rooms[room][socket.id].user;
+      delete userToRoom[oldUser._id];
       delete rooms[room];
       delete socketToRoom[socket.id]
     };
-    if (user) delete userToRoom[user._id];
   }
 };
 
@@ -189,7 +191,7 @@ module.exports = {
 
       // for joining/creating room
       socket.on("createLobby", (room) => {
-        const user = getUserFromFilterSocketID(socket.id, "/game#")
+        const user = getUserFromFilterSocketID(socket.id, "/game#");
         addUsertoRoom(user, socket, room);
         
         // make the user the host of the lobby
@@ -200,11 +202,10 @@ module.exports = {
         console.log(`A player has joined room ${room}`, rooms[room]);
       });
 
-      // for rejoin
+      // now it doesn't rejoin
       socket.on("checkJoined", (room) => {
         let status;
         const user = getUserFromFilterSocketID(socket.id, "/game#");
-
         if (userToRoom[user._id] === room) {
           status = true;
           addUsertoRoom(user, socket, room);
@@ -221,17 +222,30 @@ module.exports = {
         game.to(socket.id).emit("isJoined", status);
       });
 
+      socket.on("getPlayers", (room) => {
+        if (room) {
+          const players = getListofPlayers(room);
+          if (players) {
+            let users = players.map(player => rooms[room][player].user);
+            
+            game.to(room).emit("listPlayers", users);
+          } 
+        }
+      })
+
       socket.on("joinLobby", (room) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#");
         if(rooms[room]) {
           // hardcoded maxPlayers to 8
-          if (getListofPlayers(rooms[room]).length < 8) {
+          const numPlayers = getListofPlayers(room).length
+          const status = rooms[room].pageStatus;
+          if ((numPlayers < 8) && (status === "lobby")) {
             addUsertoRoom(user, socket, room);
             socket.join(room);
 
             game.to(room).emit("newPlayer", user);
             console.log(`A player has joined room ${room}`, rooms[room], user._id);
-            console.log(userToRoom[user._id])
+            // console.log(userToRoom[user._id])
           } else{
             game.to(socket.id).emit("isJoined", false);
           }
