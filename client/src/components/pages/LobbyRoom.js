@@ -3,9 +3,11 @@ import { gamesocket, changeStatus } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import { test, leave} from "../../client-socket.js";
 import GameCreate from "../modules/GameCreate.js";
+import WaitingRoom from "../modules/WaitingRoom.js";
+import "./Rules.css";
 
 
-class Lobby extends Component {
+class LobbyRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +15,7 @@ class Lobby extends Component {
       pageStatus: null,
       host: false,
       winner: null,
+      players: [],
     }
   }
 
@@ -39,6 +42,10 @@ class Lobby extends Component {
       this.setState({ host: isHost });
       console.log("there is a new host");
     });
+
+    gamesocket.on("newPlayer", (player) => this.setState((prevstate) => ({
+      players: prevstate.players.concat([player]),
+    })));
   }
 
   componentWillUnmount = () => {
@@ -46,19 +53,12 @@ class Lobby extends Component {
   }
 
   render() {
+    const players = this.state.players;
+
     if (this.state.isJoined) {
       if (this.state.pageStatus === "lobby") {
         return (
-          <>
-            <div>
-              This is the lobby! Yay!!!
-              <button onClick={() => test(this.props.roomId)}> test </button>
-              <Link to="/">
-                <button onClick={() => leave(this.props.roomId)}> leave </button>
-              </Link>
-              {this.state.host && (<button onClick={() => changeStatus(this.props.roomId, "game")} > Start Game </button>)}
-            </div>
-          </>
+          <WaitingRoom roomId={this.props.roomId} players={this.state.players} host={this.state.host} />
         );
       } else if (this.state.pageStatus === "game") {
         return (
@@ -66,6 +66,9 @@ class Lobby extends Component {
             <h2> reload the page to see cards </h2>
 
             <p>Your deck</p>
+            <Link to="/">
+              <button onClick={() => leave(this.props.roomId)}> leave </button>
+            </Link>
 
             {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} />)}
           </div>
@@ -77,6 +80,9 @@ class Lobby extends Component {
             <div>
               <button onClick={() => changeStatus(this.props.roomId, "lobby")} > Return to Lobby </button>
             </div>
+            <Link to="/">
+              <button onClick={() => leave(this.props.roomId)}> leave </button>
+            </Link>
           </div>
         )
       }
@@ -90,4 +96,4 @@ class Lobby extends Component {
   }
 }
 
-export default Lobby;
+export default LobbyRoom;

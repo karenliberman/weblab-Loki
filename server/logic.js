@@ -2,6 +2,11 @@ const uuidv4 = require("uuid/v4");
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
 const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
+const getValue = (card) => {
+  let value = VALUES.indexOf(card.value) + 1;
+  return value;
+}
+
 const newRandomRule = () => {
   return Math.round(Math.random());
 }
@@ -20,6 +25,7 @@ const validMove = (index, cur_hand, rule_index) => { //add rule_index here
 };
 
 /* framework for implementing more rules */
+/* first reds then blacks */
 const rule1 = (index, cur_hand) => {
   let copy_hand = cur_hand.slice()
   let cur_card = copy_hand[index];
@@ -41,7 +47,7 @@ const rule1 = (index, cur_hand) => {
   return true;
 }
 
-
+/* can only play the highest card */
 const rule2 = (index, cur_hand) => {
   let copy_hand = cur_hand.slice();
   let cur_card = copy_hand[index];
@@ -56,7 +62,42 @@ const rule2 = (index, cur_hand) => {
     }
   }
   return true
-}
+};
+
+/* can only play cards in the first half of your hand */
+const rule3 = (index, cur_hand) => {
+  let copy_hand = cur_hand.slice();
+  
+  if (index <= Math.floor(copy_hand.length / 2) ) {
+    return false;
+  };
+  return true;
+};
+
+/* only play cards with the same suit as the last card */
+const rule4 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+  
+  if (cur_card.suit === last_card.suit) {
+    return true;
+  };
+  return false;
+};
+
+/* only place cards with the same parity as the last card*/
+const rule5 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+
+  if (getValue(cur_card) % 2 === getValue(last_card) % 2) {
+    return true;
+  };
+  return false;
+};
+
+/* */
+
 
 const newCard = () => {
     const id = uuidv4();
