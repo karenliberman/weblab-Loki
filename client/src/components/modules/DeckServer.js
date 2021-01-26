@@ -41,8 +41,11 @@ class DeckServer extends Component {
     });
 
     gamesocket.on("newLastCard", (card) => {
-      this.setState({lastCard: card.suit+card.value})
-      console.log(card);
+      if (card !== null){
+        this.setState({lastCard: card.suit+card.value})
+      }
+      
+      
     })
   }
 
