@@ -132,8 +132,8 @@ const addUser = (user, socket) => {
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
-    oldSocket.disconnect();
-    delete socketToUserMap[oldSocket.id];
+    // oldSocket.disconnect();
+    // delete socketToUserMap[oldSocket.id];
   }
 
   userToSocketMap[user._id] = socket;
@@ -190,6 +190,7 @@ module.exports = {
         changeHost(room, socket.id, true);
 
         socket.join(room);
+        game.to(room).emit("newPlayer", user.name);
         console.log(`A player has joined room ${room}`, rooms[room]);
       });
 
@@ -216,6 +217,8 @@ module.exports = {
         if(rooms[room]) {
           addUsertoRoom(user, socket, room);
           socket.join(room);
+
+          game.to(room).emit("newPlayer", user.name);
           console.log(`A player has joined room ${room}`, rooms[room], user._id);
           console.log(userToRoom[user._id])
         } else {
