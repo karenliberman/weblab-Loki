@@ -11,27 +11,41 @@ class WaitingRoom extends Component {
 
     render () {
         return (
-            <div class="container">
-              <div class="item">
-                <div>
-                  This is the lobby! Yay!!!
-                  <button onClick={() => test(this.props.roomId)}> test </button>
-                  <Link to="/">
-                    <button onClick={() => leave(this.props.roomId)}> leave </button>
-                  </Link>
-                  {this.props.host && (<button onClick={() => changeStatus(this.props.roomId, "game")} > Start Game </button>)}
-                </div>
-                
-              </div>
-              <div class="item">
+            <div class="WaitingRoom-container">
+              
+              <div class="WaitingRoom-item">
                 <div>
                   {this.props.players && this.props.players.map((player) => (<div className="rule-container">{player}</div>))}
                 </div>
               </div>
 
-              <div class="item third-item">
+              <div class="WaitingRoom-item">
+                <div class="WaitingRoom-vertical">
+                  This is the lobby! Yay!!!
+                  <div>
+                  <button  onClick={() => test(this.props.roomId)} class="button2"> test </button>
+                  </div>
+
+
+                  <div>
+                  {this.props.host && (<button class="button2 bigboybutton" onClick={() => changeStatus(this.props.roomId, "game")} > Start Game </button>)}
+                  </div>
+
+
+                  <div>
+                  <Link to="/">
+                    <button class="button2" onClick={() => leave(this.props.roomId)}> leave </button>
+                  </Link>
+                  </div>
+
+
+                </div>
+                
+              </div>
+
+              <div class="WaitingRoom-third-item WaitingRoom-item">
                 <div>
-                    Copy Room ID: <button onClick={() => navigator.clipboard.writeText(this.props.roomId)}>{this.props.roomId}</button>
+                    Copy Room ID: <button class="button2" onClick={() => navigator.clipboard.writeText(this.props.roomId)}>{this.props.roomId}</button>
                 </div>
               </div>
             </div>

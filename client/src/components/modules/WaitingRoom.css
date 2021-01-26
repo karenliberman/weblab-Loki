@@ -1,18 +1,27 @@
-.container {
+.WaitingRoom-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin: 2% 2% 2% 2%;
 }
 
-.item {
-    width: 30%;
+.WaitingRoom-item {
+    width: 48%;
     height: auto;
     padding-bottom: 200px;
     background: white;
     text-align: center;
     margin-bottom: 2%;
 }
-.third-item {
-    margin: auto;
-    width: 100%
+.WaitingRoom-third-item {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 100%;
+}
+
+.WaitingRoom-vertical {
+    background: white;
+    flex-wrap: nowrap;
 }
