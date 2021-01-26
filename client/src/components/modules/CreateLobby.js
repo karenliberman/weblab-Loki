@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
 import { createLobby } from "../../client-socket.js"
-
-
+import "./../pages/Lobby.css"
 
 
 
@@ -42,7 +41,7 @@ class CreateLobby extends Component {
         return (
             <div>
                 <Link to={`/lobby/${this.state.roomId}`}>
-                    <button onClick={() => createLobby(this.state.roomId)}>create room</button>
+                    <button class="button2" onClick={() => createLobby(this.state.roomId)}>create room</button>
                 </Link>
             </div>
 

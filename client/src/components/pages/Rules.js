@@ -10,7 +10,7 @@ class Rules extends Component {
 
   render() {
     return (
-    <div className="container rule-body">
+    <div className="rule-body">
       <div className="rule-container">
         Put red cards (hearts, diamonds) before black ones (spades, clubs)        
       </div>

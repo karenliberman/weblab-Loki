@@ -3,7 +3,7 @@ import { createLobby, joinLobby } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import CreateLobby from "../modules/CreateLobby.js";
 import JoinLobby from "../modules/JoinLobby.js";
-
+import "./Lobby.css";
 
 
 class Lobby extends Component {
@@ -17,14 +17,24 @@ class Lobby extends Component {
 
   render() {
     return (
-      <>
-        <div>
+      <div class="lobbyContent container">
+        <div class="item box-shadow">
+          <h2 class="glow-blue">Create Game</h2>
+          <hr></hr>
           <CreateLobby />
         </div>
-        <div>
+        <div class="item box-shadow">
+          <h2 class="glow-green">Join Game</h2>
+          <hr></hr>
           <JoinLobby />
         </div>
-      </>
+        <div class="item box-shadow">
+          <h2 class="glow-red">Singleplayer</h2>
+          <hr></hr>
+          <button class="button2">Play Now</button>
+
+        </div>
+      </div>
     );
   }
 }
