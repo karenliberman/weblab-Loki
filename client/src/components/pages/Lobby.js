@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { gamesocket } from "../../client-socket.js";
+import { createLobby, joinLobby } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import CreateLobby from "../modules/CreateLobby.js";
+import JoinLobby from "../modules/JoinLobby.js";
+
 
 
 class Lobby extends Component {
@@ -15,9 +17,14 @@ class Lobby extends Component {
 
   render() {
     return (
-      <div>
-        <CreateLobby />
-      </div>
+      <>
+        <div>
+          <CreateLobby />
+        </div>
+        <div>
+          <JoinLobby />
+        </div>
+      </>
     );
   }
 }

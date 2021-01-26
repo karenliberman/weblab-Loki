@@ -1,16 +1,66 @@
 .handContainer {
     display: flex;
     flex-direction: sideways;
-    background-color: cadetblue;
+    
+    background: #968C8C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-    height: 100px;
-    max-width: 1000px;
+    width: 700px;
+    height: 149px;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
 
     padding-left: 5px;
     padding-right: 5px;
 
     margin-left: auto;
     margin-right: auto;
+}
+
+.gameTable {
+
+width: 500px;
+height: 200px;
+display: block;
+
+
+margin-left: auto;
+margin-right: auto;
+padding: 50px;
+
+background: #174A35;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+
+}
+
+.cardPile{
+
+width: 117px;
+height: 149px;
+
+margin-left: 30px;
+margin-top: 18px;
+padding-top: 30px;
+
+background: #76A185;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+}
+
+
+.hoverPile {
+    width: 117px;
+height: 149px;
+
+margin-left: 30px;
+margin-top: 18px;
+padding-top: 30px;
+
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: black;
+}
+
+.background {
+    background-image: url('../../public/image1.png');
 }

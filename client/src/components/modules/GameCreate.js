@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { socket } from "../../client-socket.js";
+import { gamesocket } from "../../client-socket.js";
 import DeckServer from "./DeckServer.js";
 import { post } from "./../../utilities.js";
 
@@ -27,33 +27,26 @@ class GameCreate extends Component {
     // this.shuffleDeck(newDeck);
     const newHand = this.newRandomHand();
     // this is now just the discard pile
-    const newRule = this.newRandomRule(); //get us the new rule
-    console.log("Rule", newRule);
-    this.setState({rule: newRule}); // Hacky code
 
-    post("/api/deck", {cards: newDeck, gameId: "1", action: "create"}); //change
+    post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "create"}); //change
 
-    post("/api/hand", {cards: newHand, gameId: "1", action: "create"}); //change
+    post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "create"}); //change
 
-    socket.on("update", async (newHand, newDeck, user) => {
-      if (user._id === this.props.userId) {
-        await Promise.all([
-        post("/api/deck", {cards: newDeck, gameId: "1", action: "update"}),
-        post("/api/hand", {cards: newHand, gameId: "1", action: "update"}),
-        ]);
-      };
-    })
+    gamesocket.on("rules", (rules) => this.setState({ rule: rules}));
 
-    socket.on("winner", (message, user) => {
-      if (user._id === this.props.userId);
-        this.setState({winner: message});
-        post("/api/deck", { gameId: "1", action: "delete"});
-        post("/api/hand", { gameId: "1", action: "delete"});
+    gamesocket.on("update", async (newHand, newDeck) => {
+      await Promise.all([
+      post("/api/deck", {cards: newDeck, gameId: this.props.gameId, action: "update"}),
+      post("/api/hand", {cards: newHand, gameId: this.props.gameId, action: "update"}),
+      ]);
     })
 
   }
   componentWillUnmount = () => {
-    socket.removeAllListeners();
+    gamesocket.removeAllListeners("update");
+    gamesocket.removeAllListeners("winner");
+    post("/api/deck", { gameId: this.props.gameId, action: "delete"});
+    post("/api/hand", { gameId: this.props.gameId, action: "delete"});
   }
   newRandomHand = () => {
     let hand = [];
@@ -62,10 +55,6 @@ class GameCreate extends Component {
       hand.push(newCard);
     }
     return hand;
-  }
-
-  newRandomRule = () => {
-    return Math.round(Math.random());
   }
 
   newHand = (deck) => {
@@ -122,16 +111,10 @@ class GameCreate extends Component {
 
 
   render() {
-    let showGame;
-    if (!this.state.winner) {
-        showGame =  this.props.userId && (<DeckServer winner={this.state.winner} rule={this.state.rule}/>);
-    } else {
-        showGame = (<p>{this.state.winner}</p>);
-    };
     return (
 
       <div>
-          {showGame}
+          {this.props.userId && (<DeckServer winner={this.state.winner} rule={this.state.rule}/>)}
       </div>
     );
   }

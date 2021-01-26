@@ -22,7 +22,7 @@ class Card extends Component {
             ref={provided.innerRef}
             className={"cardSetting " + this.props.suit + this.props.value + " sexyCard"} 
             onClick={this.props.playerMove}
-            >hello</div>
+          />
         )}
       </Draggable>
     );

@@ -4,6 +4,7 @@ import { get, post } from "../../utilities.js";
 import Card from "./Card.js"
 import { move } from "../../client-socket.js"
 import "./Game.css";
+import "./Cards.css";
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
 
@@ -15,6 +16,7 @@ class DeckServer extends Component {
         cards: [],
         hand: [],
         winner: null,
+        placedCard: "placeCard",
 
     }
   }
@@ -54,6 +56,11 @@ class DeckServer extends Component {
     if (destination.droppableId== source.droppableId && destination.index == source.index) {
       return;
     }
+    if (destination.droppableId == "targetContainer"){
+      move(source.index, this.state.hand, this.state.cards, this.props.rule);
+      
+      return;
+    }
     const movingCard = this.state.hand[source.index];
     const cardHandBox = "handContainer";
     const newHand =  Array.from(this.state.hand)
@@ -63,21 +70,40 @@ class DeckServer extends Component {
     this.setState({hand: newHand});
   };
 
-
+ 
 
   render() {
     
     return (
 
-      <div>
+      <div >
 
         <DragDropContext onDragEnd={this.onDragEnd}
         >
+
+        Target
+        <div className="gameTable">
+        <Droppable droppableId={"targetContainer"} direction="horizontal">
+
+        {(provided, snapshot) => (
+        <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
+        isDraggingOver={snapshot.isDraggingOver}
+        >
+
+        <div className={"cardSetting " + this.state.placedCard}> </div>
+
+        </div>
+        )}
+        </Droppable>
+        </div>
+        <br/>
+        <br/>
+
         <Droppable droppableId={"handContainer"} direction="horizontal">
         {(provided) => (
 
         <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards, this.state.rule)}/>))}
+        {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards, this.props.rule)}/>))}
         {provided.placeholder}
         </div>
 
@@ -97,18 +123,9 @@ class DeckServer extends Component {
         )}
         </Droppable>
         
-        <br/>
-        <br/>
         
-        Target
-        <Droppable droppableId={"targetContainer"} direction="horizontal">
-        {(provided) => (
-        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.cards.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
-        {provided.placeholder}
-        </div>
-        )}
-        </Droppable>
+        
+        
         </DragDropContext>
       </div>
     );

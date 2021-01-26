@@ -2,6 +2,10 @@ const uuidv4 = require("uuid/v4");
 const SUITS = ["spades", "diamonds", "clubs", "hearts"];
 const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
+const newRandomRule = () => {
+  return Math.round(Math.random());
+}
+
 const get_color = (cur_card) => {
     return cur_card.suit==="spades" || cur_card.suit==="clubs" ? "black" : "red";
 };
@@ -81,9 +85,7 @@ const playerMove = (index, hand, deck, rule) => {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
     } else {
-        console.log("Rule 1 Violation");
-        let violationCard = newCard();
-        newHand = newHand.concat(violationCard);
+        newHand = violation(newHand);
     };
 
     const winner =  checkWin(newHand);
@@ -93,7 +95,19 @@ const playerMove = (index, hand, deck, rule) => {
 
 };
 
+const violation = (hand) => {
+  console.log("A rule has been violated!");
+  let newHand = hand.slice();
+  const violationCard = newCard();
+
+  newHand = newHand.concat(violationCard);
+  
+  return newHand;
+}
+
 
 module.exports = {
     playerMove,
+    violation,
+    newRandomRule,
 };

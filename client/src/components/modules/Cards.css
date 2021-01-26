@@ -2,19 +2,14 @@
 .cardSetting {
   /* make it responsive */
 
-    max-width: 55px;
+    max-width: 83px;
     width: 100%;
   height: 80%;
 
 
-  margin: 100px, 200px;
-
-
-
- 
   /* div height to be the same as width*/
 
-  flex: 1, 1, auto;
+  
   
   /* Centering on image`s center*/
   background-position-y: center;
@@ -24,11 +19,16 @@
   /* it makes the clue thing, takes smaller dimension to fill div */
   background-size: cover;
 
-  border-color: black;
+}
+
+.placeCard {
+  background-image: url('../../public/Group1.png');
+  margin: auto;
 }
 
 .sexyCard:hover {
-  border: yellow 2px solid;
+  border-top: 2px solid yellow;
+  border-bottom: 2px solid yellow;
 } 
 
 
