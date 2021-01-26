@@ -56,6 +56,11 @@ class DeckServer extends Component {
     if (destination.droppableId== source.droppableId && destination.index == source.index) {
       return;
     }
+    if (destination.droppableId == "targetContainer"){
+      move(source.index, this.state.hand, this.state.cards, this.props.rule);
+      
+      return;
+    }
     const movingCard = this.state.hand[source.index];
     const cardHandBox = "handContainer";
     const newHand =  Array.from(this.state.hand)
@@ -65,7 +70,7 @@ class DeckServer extends Component {
     this.setState({hand: newHand});
   };
 
-
+ 
 
   render() {
     
@@ -79,9 +84,14 @@ class DeckServer extends Component {
         Target
         <div className="gameTable">
         <Droppable droppableId={"targetContainer"} direction="horizontal">
-        {(provided) => (
-        <div className = "cardPile" ref={provided.innerRef} {...provided.droppableProps}>
-          <div className={"cardSetting " + this.state.placedCard}> </div>
+
+        {(provided, snapshot) => (
+        <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
+        isDraggingOver={snapshot.isDraggingOver}
+        >
+
+        <div className={"cardSetting " + this.state.placedCard}> </div>
+
         </div>
         )}
         </Droppable>
