@@ -125,7 +125,7 @@ class DeckServer extends Component {
   getEnemies = () => {
     //makes a copy of the players array
     let enemies = this.props.players.slice();
-    enemies.splice(this.props.players.indexOf(this.props.userName)) //removes your username from the enemies array
+    enemies.splice(this.props.players.indexOf(this.props.userName), 1) //removes your username from the enemies array
 
     return enemies;
 
@@ -236,7 +236,7 @@ class DeckServer extends Component {
         <Droppable droppableId={"handContainer"} direction="horizontal">
           {(provided) => (
 
-            <div className = {`${this.state.isTurn}-isTurn handContainer`} ref={provided.innerRef} {...provided.droppableProps}>
+            <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
               {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
               {provided.placeholder}
             </div>

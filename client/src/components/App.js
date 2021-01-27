@@ -26,6 +26,7 @@ class App extends Component {
     super(props);
     this.state = {
       userId: undefined,
+      userName: undefined
     };
   }
 
@@ -34,6 +35,7 @@ class App extends Component {
       if (user._id) {
         // they are registed in the database, and currently logged in.
         this.setState({ userId: user._id });
+        this.setState({ userName: user.name })
       }
     });
   }
@@ -43,12 +45,14 @@ class App extends Component {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
       this.setState({ userId: user._id });
+      this.setState({ userName: user.name})
       post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   handleLogout = () => {
     this.setState({ userId: undefined });
+    this.setState({ userName: undefined })
     post("/api/logout");
   };
 
@@ -71,7 +75,7 @@ class App extends Component {
           />
           <Rules path="/rules" />
           {this.state.userId ? (<Lobby userId={this.state.userId} path="/lobby" />) : (<Redirect from="/lobby" to="/" />)}
-          <LobbyRoom  leave={() => leave()} test={() => test()} userId={this.state.userId} path="/lobby/:roomId" />
+          <LobbyRoom  leave={() => leave()} test={() => test()} userId={this.state.userId} userName={this.state.userName} path="/lobby/:roomId" />
           <NotFound default />
         </Router>
       </>
