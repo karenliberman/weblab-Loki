@@ -17,9 +17,7 @@ class NavBar extends Component {
         <div className="NavBar-container">
           <Link to="/" className="Nav-link"> Home Page </Link>
           <Link to='/rules' className="Nav-link"> Rules </Link>
-          {this.props.userId && (
-            <Link to='/rules' className="Nav-link"> Profile </Link>
-          )}
+
           {/* {this.props.userId && (
             <Link to="/gameserver" className="Nav-link">Game</Link>
           )} */}
