@@ -21,11 +21,7 @@ class WaitingRoom extends Component {
 
               <div class="WaitingRoom-item">
                 <div class="WaitingRoom-vertical">
-                  This is the lobby! Yay!!!
-                  <div>
-                  <button  onClick={() => test(this.props.roomId)} class="button2"> test </button>
-                  </div>
-
+                  This is the lobby
 
                   <div>
                   {this.props.host && (<button class="button2 bigboybutton" onClick={() => startGame(this.props.roomId)} > Start Game </button>)}

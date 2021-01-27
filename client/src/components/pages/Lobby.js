@@ -21,7 +21,7 @@ class Lobby extends Component {
         <div class="item box-shadow">
           <h2 class="glow-blue">Create Game</h2>
           <hr></hr>
-          <CreateLobby />
+          <CreateLobby mode=""/>
         </div>
         <div class="item box-shadow">
           <h2 class="glow-green">Join Game</h2>
@@ -31,7 +31,8 @@ class Lobby extends Component {
         <div class="item box-shadow">
           <h2 class="glow-red">Singleplayer</h2>
           <hr></hr>
-          <button class="button2">Play Now</button>
+          <CreateLobby mode="singleplayer" />
+
 
         </div>
       </div>
