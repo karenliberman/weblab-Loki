@@ -38,4 +38,18 @@ export const startGame = (room) => {
 
 export const returnLobby = (room) => {
   gamesocket.emit("returnLobby", room);
-}
+};
+
+export const subtractCards = (room, numCards) => {
+  if (numCards > 5) {
+    const newNumCards = numCards - 1;
+    gamesocket.emit("updateNumCards", room, newNumCards);
+  }
+};
+
+export const addCards = (room, numCards) => {
+  if (numCards < 12) {
+    const newNumCards = numCards + 1;
+    gamesocket.emit("updateNumCards", room, newNumCards)
+  }
+};

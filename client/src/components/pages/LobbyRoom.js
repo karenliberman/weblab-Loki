@@ -17,6 +17,7 @@ class LobbyRoom extends Component {
       host: false,
       winner: null,
       players: [],
+      numCards: 7,
     }
   }
 
@@ -75,6 +76,10 @@ class LobbyRoom extends Component {
         players: newPlayers,
       });
     });
+
+    gamesocket.on("newNumCards", (numCards) => {
+      this.setState({ numCards: numCards });
+    });
   }
 
   componentWillUnmount = () => {
@@ -95,7 +100,7 @@ class LobbyRoom extends Component {
     if (this.state.isJoined) {
       if (this.state.pageStatus === "lobby") {
         return (
-          <WaitingRoom roomId={this.props.roomId} players={players} host={this.state.host} />
+          <WaitingRoom roomId={this.props.roomId} players={players} host={this.state.host} numCards={this.state.numCards} />
         );
       } else if (this.state.pageStatus === "game") {
         return (
@@ -107,7 +112,7 @@ class LobbyRoom extends Component {
               <button onClick={() => leave(this.props.roomId)}> leave </button>
             </Link>
 
-            {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={5}/>)}
+            {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={this.state.numCards}/>)}
           </div>
         );
       } else if (this.state.pageStatus === "winner") {

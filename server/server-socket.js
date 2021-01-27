@@ -260,7 +260,7 @@ module.exports = {
         if(checkIfAllReady(room)) {
           game.to(room).emit("statusChange", "game", null);
           // get rules
-          const rules = logic.newRandomRules(2);
+          const rules = logic.newRandomRules(1);
           rooms[room].rules = rules;
           // get first card to the stack
           const lastCard = logic.newCard();
@@ -285,6 +285,10 @@ module.exports = {
             game.to(socket.id).emit("newHost", true);
           }
         }
+      })
+
+      socket.on("updateNumCards", (room, numCards) => {
+        game.to(room).emit("newNumCards", numCards);
       })
 
       // use for playing the game
