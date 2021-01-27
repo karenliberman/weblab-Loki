@@ -198,6 +198,7 @@ module.exports = {
         socket.join(room);
         game.to(room).emit("newPlayer", user);
         console.log(`A player has joined room ${room}`, rooms[room]);
+        console.log(rooms);
       });
 
       // now it doesn't rejoin
@@ -319,7 +320,7 @@ module.exports = {
             game.to(room).emit("currentUser", user);
 
             if (winner) {
-              const message = `${user._id} has won the game!`
+              const message = user.name;
               game.to(room).emit("statusChange", "winner", message);
 
               // reset lobby values

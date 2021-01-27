@@ -84,7 +84,7 @@ class LobbyRoom extends Component {
   }
 
   componentWillUnmount = () => {
-    // gamesocket.emit("leave", this.props.roomId);
+    gamesocket.emit("leave", this.props.roomId);
     gamesocket.removeAllListeners();
   }
 
@@ -111,7 +111,7 @@ class LobbyRoom extends Component {
             <div className="u-textCenter">
             </div>
             <Link to="/">
-              <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
+              <button className="button2" > leave </button>
             </Link>
 
             {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={this.state.numCards}/>)}
@@ -125,7 +125,7 @@ class LobbyRoom extends Component {
               <button className="button2" onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
             </div>
             <Link to="/">
-              <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
+              <button className="button2"> leave </button>
             </Link>
             <div>             
               <Confetti/>

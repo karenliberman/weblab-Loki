@@ -18,7 +18,13 @@ class DeckServer extends Component {
         winner: null,
         placedCard: "placeCard",
         lastCard: "placeCard",
+        isTurn: false,
+        violation: "<- Place a card on the pile",
+        enemyCardNumber: new Array(7).fill(this.props.numCards),
+        enemies: this.getEnemies(),
+
     }
+    
   }
 
   componentDidMount = () => {
@@ -43,11 +49,41 @@ class DeckServer extends Component {
       if (card !== null){
         this.setState({lastCard: card.suit+card.value})
       }
+    });
+
+    gamesocket.on("violation", (isViolation, violations, numCardsAdded) => {
+      this.setState({violation: violations})
+      /*console.log(isViolation) TESTING!
+      console.log(violations)
+      console.log(numCardsAdded)
+      console.log("INTERESTING STUFF")
+      console.log(this.props.players)
+      console.log(this.props.playerTurn)
+      console.log(this.props.userName)
+      console.log("enemies", this.state.enemies)*/
+
+      //THIS WILL UPDATE THE ENEMY CARDS!
+      //if its your action, don't update
+      if (this.props.playerTurn !== this.props.userName) {
+          let enemyIndex = this.state.enemies.indexOf(this.props.playerTurn);
+          let tempEnemyCards = this.state.enemyCardNumber.slice();
+        //if there was a violation, see the number of cards changed
+        if (isViolation) {
+          tempEnemyCards[enemyIndex] += (numCardsAdded - 1);
+
+        //if no violation, decrease the number of cards by 1
+        } else {
+          tempEnemyCards[enemyIndex] -= 1;
+        }
+        this.setState({enemyCardNumber: tempEnemyCards})
+      } 
       
-      
-    })
+    });
 
     /* Kill if broken */
+    if (this.props.playerTurn === this.props.userName) {
+      this.setState({isTurn: true});
+    }
   }
 
   componentWillUnmount = () => {
@@ -69,9 +105,12 @@ class DeckServer extends Component {
     }
     const movingCard = this.state.hand[source.index];
     if (destination.droppableId == "targetContainer"){
+      this.setState({lastCard: movingCard.suit+movingCard.value});
       move(source.index, this.state.hand, this.state.cards, this.props.rule);
-      this.setState({placedCard: movingCard.suit + movingCard.value});
+      
       this.state.hand.splice(source.index, 1);
+      
+      
       return;
     }
     
@@ -83,7 +122,14 @@ class DeckServer extends Component {
     this.setState({hand: newHand});
   };
 
- 
+  getEnemies = () => {
+    //makes a copy of the players array
+    let enemies = this.props.players.slice();
+    enemies.splice(this.props.players.indexOf(this.props.userName)) //removes your username from the enemies array
+
+    return enemies;
+
+  }
 
   render() {
 
@@ -95,72 +141,118 @@ class DeckServer extends Component {
 
         <DragDropContext onDragEnd={this.onDragEnd}
         >
-        
 
+        <div className="enemyBoxContainer-top">
+          
+          { this.state.enemies.length > 1 && <div className="enemyBox"> 
+            <p className="enemyText"> {this.state.enemies[1]+""} </p>
+            <div className="enemyCardsContainer">
+            {[...Array(this.state.enemyCardNumber[1])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
+          </div>}
+          { this.state.enemies.length > 0 && <div className="enemyBox"> 
+            <p className="enemyText"> {this.state.enemies[0]+""} </p>
+            <div className="enemyCardsContainer">
+            {[...Array(this.state.enemyCardNumber[0])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
+          </div> }
+          { this.state.enemies.length > 2 && <div className="enemyBox"> 
+            <p className="enemyText">{this.state.enemies[2]+""} </p>
+            <div className="enemyCardsContainer">
+            {[...Array(this.state.enemyCardNumber[2])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
+          </div>}
+
+        </div>
+        
         <div className="u-textCenter">
-            {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
-            {console.log("ITS ME:", this.props.userName)}
-        
-        </div>
+              {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
+              {console.log("ITS ME:", this.props.userName)}
+          </div>
 
-        <div className="gameTable">
+        <div className="gameTableAndEnemyContainter">
 
-        <Droppable droppableId={"targetContainer"} direction="horizontal">
+          <div className="enemyBoxContainer-sides">
+            
+            {this.state.enemies.length > 3 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[3]+""} </p>
+              <div className="enemyCardsContainer">
+              {[...Array(this.state.enemyCardNumber[3])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>}
+            {this.state.enemies.length > 5 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[5]+""} </p>
+              <div className="enemyCardsContainer">
+              {[...Array(this.state.enemyCardNumber[5])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>}
 
-        {(provided, snapshot) => (
-        <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
-        isDraggingOver={snapshot.isDraggingOver}
-        >
-
-        <div className={"cardSetting " + this.state.lastCard}> </div>
-
-        </div>
-        )}
-        </Droppable>
+          </div>
 
           
 
+          <div className="gameTable">
+
+            <Droppable droppableId={"targetContainer"} direction="horizontal">
+
+            {(provided, snapshot) => (
+              <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
+              isDraggingOver={snapshot.isDraggingOver}
+              >
+
+                <div className={"cardSetting " + this.state.lastCard}> </div>
+
+              </div>
+            )}
+            </Droppable>
+
+            <div>
+              <p>{this.state.violation}</p>
+            </div>
+
+          </div>
+
+          <div className="enemyBoxContainer-sides">
+            
+          {this.state.enemies.length > 4 &&<div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[4]+""} </p>
+              <div className="enemyCardsContainer">
+              {[...Array(this.state.enemyCardNumber[4])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>}
+            {this.state.enemies.length > 6 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[6]+""} </p>
+              <div className="enemyCardsContainer">
+              {[...Array(this.state.enemyCardNumber[6])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>}
+
+          </div>
         </div>
+
         <br/>
         <br/>
 
         <Droppable droppableId={"handContainer"} direction="horizontal">
-        {(provided) => (
+          {(provided) => (
 
-        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-          {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
-          {provided.placeholder}
-        </div>
-
-        )}
+            <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
+              {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
+              {provided.placeholder}
+            </div>
+          )}
         </Droppable>
         <br/>
         <br/>
-
 
         <Droppable droppableId={"discardedContainer"} direction="horizontal">
-        {(provided) => (
-        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.cards.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
-        {provided.placeholder}
-        </div>
-        )}
-        </Droppable>
-        
-        <br/>
-        <br/>
-
-        {/* Last Card Played
-        {this.state.lastCard &&
-          (<Droppable droppableId={"discardedContainer"} direction="horizontal">
           {(provided) => (
-          <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-          {this.state.lastCard.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
-          {provided.placeholder}
-          </div>
+            <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
+              {this.state.cards.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
+              {provided.placeholder}
+            </div>
           )}
-          </Droppable>) */}
-        {/* } */}
+        </Droppable>
         
         
         </DragDropContext>

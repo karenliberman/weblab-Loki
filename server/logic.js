@@ -127,12 +127,12 @@ const rule6 = (index, cur_hand, last_card) => {
   let cur_card = copy_hand[index];
 
   copy_hand.splice(index, 1);
-  let correct_color = getColor(last_card)
-  if (getColor(cur_card) !== correct_color) {
+  let correct_color = get_color(last_card)
+  if (get_color(cur_card) !== correct_color) {
     //if wrong color, checks if you could have played the right color
     for (let i = 0; i < copy_hand.length; i++) {
       const tempCard = copy_hand[i];
-      if (getColor(tempCard) === correct_color) {
+      if (get_color(tempCard) === correct_color) {
         return [false, "Rule 6 violation"];
       }
     };
@@ -182,7 +182,7 @@ const rule9 = (index, cur_hand, last_card) => {
 
   let thirdValue = copy_hand.length / 3.0;
   
-  if ( index > Math.floor(thirdValue) && index < Math.ceiling(2*thirdValue) ) {
+  if ( index > Math.floor(thirdValue) && index < Math.ceiling(2*thirdValue) + 1 ) {
     return [true, ""];
   } else {
     return [false, "Rule 9 violation"];
@@ -217,7 +217,7 @@ const rule11 = (index, cur_hand, last_card) => {
   let cur_card = copy_hand[index];
 
   copy_hand.splice(index, 1);
-  let lastCardValue = getValue(last_vard);
+  let lastCardValue = getValue(last_card);
   
   //if the value you placed isn't lower than the last card
   if (getValue(cur_card) >= lastCardValue){}
@@ -234,7 +234,7 @@ const rule11 = (index, cur_hand, last_card) => {
   return  [true, ""]
 };
 
-const rules = [rule1, rule2, rule3, rule4, rule5];
+const rules = [rule1, rule2, rule3, rule4, rule9];
 
 //RULES CATEGORIES
 const rulesNumbers = [rule2, rule5, rule7, rule11];
@@ -247,9 +247,10 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
   let isViolation = false;
   let violations = [];
   let changeNumCards = 0;
+  console.log(rulesList);
+
 
   for(let i = 0; i < rulesList.length; i++) {
-    console.log(rulesList);
     const result = rules[rulesList[i]](index, cur_hand, lastCard);
 
     if (!result[0]) {
@@ -261,7 +262,6 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
 
   return [isViolation, violations, changeNumCards];
 
-
 };
 
 /* */
@@ -269,8 +269,9 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
 
 const newCard = () => {
     const id = uuidv4();
-    const suit = Math.floor(Math.random()*Math.random()*(4));
-    const value = Math.floor(Math.random()*Math.random()*(13));
+    const random = Math.floor(Math.random()*52);
+    const suit = random % 4;
+    const value = random % 13;
     const card = {
       suit: SUITS[suit],
       value: VALUES[value],
