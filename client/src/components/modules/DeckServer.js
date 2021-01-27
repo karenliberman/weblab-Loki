@@ -169,7 +169,7 @@ class DeckServer extends Component {
         </div>
         
         <div className="u-textCenter">
-              {this.props.playerTurn ? (<h3>{this.props.nextPlayer}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
+              {this.props.playerTurn ? (<h3>{this.props.newTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
               {console.log("ITS ME:", this.props.userName)}
           </div>
 
