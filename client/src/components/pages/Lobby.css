@@ -38,23 +38,30 @@
 button.button5{
     display:inline-block;
     padding:1.38em 4.8em;
-    border:0.1em solid #000000;
-    margin:1em 0.2em 0.2em 0;
-    border-radius:0.12em;
+    border:0.2em solid #000000;
+    margin-top:1em;
+    margin-bottom:  0.2em;
+    
+    border-radius:0.2em;
     box-sizing: border-box;
     text-decoration:none;
     font-weight:500;
-    color:#000000;
+   
+    margin-left: auto;
+    margin-right: auto;
+    color: #000000;
     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
-    background-color:goldenrod;
+    background-color:#E2E2DA;;
     text-align:center;
     transition: all 0.15s;
-    font-size: 1em;
+    font-family: 'Texturina', serif;
+    font-size: medium;
+
 }
 button.button5:hover{
     text-shadow: 0 0 2em rgba(255,255,255,1);
-    color:#FFFFFF;
-    border-color:#FFFFFF;
+    background-color:#c4c4c4;
+
 }
 
 button.button2{
