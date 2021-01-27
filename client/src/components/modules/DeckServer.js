@@ -19,8 +19,12 @@ class DeckServer extends Component {
         placedCard: "placeCard",
         lastCard: "placeCard",
         isTurn: false,
+        violation: undefined,
+        enemyCardNumber: new Array(7).fill(this.props.numCards),
+        enemies: this.props.players.slice(this.props.players.indexOf(this.props.userName), this.props.players.indexOf(this.props.userName)+1),
 
     }
+    
   }
 
   componentDidMount = () => {
@@ -45,9 +49,36 @@ class DeckServer extends Component {
       if (card !== null){
         this.setState({lastCard: card.suit+card.value})
       }
+    });
+
+    gamesocket.on("violation", (isViolation, violations, numCardsAdded) => {
+      this.setState({violation: violations})
+      /*console.log(isViolation) TESTING!
+      console.log(violations)
+      console.log(numCardsAdded)
+      console.log("INTERESTING STUFF")
+      console.log(this.props.players)
+      console.log(this.props.playerTurn)
+      console.log(this.props.userName)
+      console.log("enemies", this.state.enemies)*/
+
+      //THIS WILL UPDATE THE ENEMY CARDS!
+      //if its your action, don't update
+      if (this.props.playerTurn !== this.props.userName) {
+          let enemyIndex = this.state.enemies.indexOf(playerTurn);
+          let tempEnemyCards = this.state.enemyCardNumber.slice();
+        //if there was a violation, see the number of cards changed
+        if (isViolation) {
+          tempEnemyCards[enemyIndex] += (numCardsAdded - 1);
+
+        //if no violation, decrease the number of cards by 1
+        } else {
+          tempEnemyCards[enemyIndex] -= 1;
+        }
+        this.setState({enemyCardNumber: tempEnemyCards})
+      } 
       
-      
-    })
+    });
 
     /* Kill if broken */
     if (this.props.playerTurn == this.props.userName) {
@@ -107,23 +138,23 @@ class DeckServer extends Component {
         <div className="enemyBoxContainer-top">
           
           <div className="enemyBox"> 
-            <p className="enemyText"> enemy box 2 </p>
+            <p className="enemyText"> {this.props.players[2]+""} </p>
             <div className="enemyCardsContainer">
-            {[...Array(8)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            {[...Array(this.state.enemyCardNumber[2])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
           </div>
           <div className="enemyBox"> 
             <p className="enemyText"> enemy box 1 </p>
             <div className="enemyCardsContainer">
-            {[...Array(2)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            {[...Array(this.state.enemyCardNumber[0])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
           </div>
-          <div className="enemyBox"> 
+          { 1>2 && <div className="enemyBox"> 
             <p className="enemyText"> enemy box 3 </p>
             <div className="enemyCardsContainer">
-            {[...Array(20)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            {[...Array(this.state.enemyCardNumber[3])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
-          </div>
+          </div>}
 
         </div>
         
@@ -139,13 +170,13 @@ class DeckServer extends Component {
             <div className="enemyBox"> 
               <p className="enemyText"> enemy box 4 </p>
               <div className="enemyCardsContainer">
-              {[...Array(4)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[4])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
             </div>
             <div className="enemyBox"> 
               <p className="enemyText"> enemy box 6 </p>
               <div className="enemyCardsContainer">
-              {[...Array(1)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[6])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
             </div>
 
@@ -175,13 +206,13 @@ class DeckServer extends Component {
           <div className="enemyBox"> 
               <p className="enemyText"> enemy box 5 </p>
               <div className="enemyCardsContainer">
-              {[...Array(9)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[5])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
             </div>
             <div className="enemyBox"> 
               <p className="enemyText"> enemy box 7 </p>
               <div className="enemyCardsContainer">
-              {[...Array(6)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[7])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
             </div>
 
