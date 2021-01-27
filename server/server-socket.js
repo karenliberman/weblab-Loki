@@ -206,18 +206,22 @@ module.exports = {
       socket.on("checkJoined", (room) => {
         let status;
         const user = getUserFromFilterSocketID(socket.id, "/game#");
-        if (userToRoom[user._id] === room) {
-          status = true;
-          addUsertoRoom(user, socket, room);
-          socket.join(room);
+        if (user) {
+          if (userToRoom[user._id] === room) {
+            status = true;
+            addUsertoRoom(user, socket, room);
+            socket.join(room);
 
-          game.to(room).emit("newPlayer", user);
-          
-          const page = rooms[room].pageStatus;
-          game.to(socket.id).emit("statusChange", page, null);
+            game.to(room).emit("newPlayer", user);
+            
+            const page = rooms[room].pageStatus;
+            game.to(socket.id).emit("statusChange", page, null);
+          } else {
+            status = false;
+          };
         } else {
           status = false;
-        };
+        }
 
         game.to(socket.id).emit("isJoined", status);
       });
@@ -262,7 +266,7 @@ module.exports = {
           if(checkIfAllReady(room)) {
             game.to(room).emit("statusChange", page, null);
             // get rules
-            const rules = logic.newRandomRule();
+            const rules = logic.newRandomRules(1);
             rooms[room].rules = rules;
             // get first card to the stack
             const lastCard = logic.newCard();
@@ -271,6 +275,7 @@ module.exports = {
             // starts game
             rooms[room][socket.id].isTurn = true;
             rooms[room].pageStatus = "game";
+            game.to(room).emit("nextUser", rooms[room][socket.id].user)
           };
         } else {
           game.to(room).emit("statusChange", page, null);
@@ -304,10 +309,14 @@ module.exports = {
             const newHand = newState[0];
             const newDeck = newState[1];
             const newLastCard = newState[2][0];
+            const isViolation = newState[4];
+            const violations = newState[5];
+            const changeNumCards = newState[6];
             const winner = newState[3];
 
             // Sets the next turn to the next player
             nextTurn(room, socket);
+            game.to(room).emit("currentUser", user);
 
             if (winner) {
               const message = `${user._id} has won the game!`
@@ -320,13 +329,19 @@ module.exports = {
               rooms[room].pageStatus = "lobby";
             } else {
               game.to(socket.id).emit("update", newHand, newDeck);
+              // isViolation(whether there is a violation), violations(array of messages with the violations/empty if no violations), changeNumCards(the change of numCards; -1 if is correct)
+              game.to(room).emit("violation", isViolation, violations, changeNumCards );
+              // the card that is shown in the stack
               game.to(room).emit("newLastCard", newLastCard);
+              // the actual last card
+              game.to(room).emit("actualLastCard", hand[index])
             }
           };
         } else {
           const newHand = logic.violation(hand);
           const newDeck = deck;
           game.to(socket.id).emit("update", newHand, newDeck);
+          game.to(room).emit("violation", true, ["Playing when is not your turn!"], 1 );
         };
 
         

@@ -19,7 +19,17 @@ class GameCreate extends Component {
         winner: false,
         lastCard: undefined,
         playerTurn: undefined,
+        numCardsPerPlayer: this.getNumCardsofPlayers(this.props.players, this.props.numCards)
     }
+  }
+
+  getNumCardsofPlayers = (players, numCards) => {
+    let numCardstoPlayer = {};
+    for (let i = 0; i< players.length; i++) {
+      numCardstoPlayer[players] = numCards;
+    };
+
+    return numCardstoPlayer
   }
 
   componentDidMount = () => {
@@ -49,11 +59,17 @@ class GameCreate extends Component {
 
     })
 
+    gamesocket.on("currentUser", (user) => {
+      console.log(user.name);
+    })
+
   }
   componentWillUnmount = () => {
     gamesocket.removeAllListeners("update");
     gamesocket.removeAllListeners("rules");
     gamesocket.removeAllListeners("newLastCard");
+    gamesocket.removeAllListeners("nextUser");
+    gamesocket.removeAllListeners("currentUser");
     post("/api/deck", {action: "delete"});
     post("/api/hand", {action: "delete"});
   }
