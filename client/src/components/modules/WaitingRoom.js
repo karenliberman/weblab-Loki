@@ -21,15 +21,15 @@ class WaitingRoom extends Component {
 
               <div class="WaitingRoom-item">
                 <div class="WaitingRoom-vertical">
-                  This is the lobby
-
+                  <h1 class="glow-green">Welcome to the lobby</h1>
+                  
                   <div>
                   {this.props.host && (<button class="button2 bigboybutton" onClick={() => startGame(this.props.roomId)} > Start Game </button>)}
                   </div>
 
                   <div>
                     {this.props.host && (<button className="button2" onClick={() => subtractCards(this.props.roomId, this.props.numCards)}> {"<"} </button>)}
-                    {this.props.numCards}
+                    {"  " + this.props.numCards + "  "}
                     {this.props.host && (<button className="button2" onClick={() => addCards(this.props.roomId, this.props.numCards)}> {">"} </button>)}
                   </div>
 

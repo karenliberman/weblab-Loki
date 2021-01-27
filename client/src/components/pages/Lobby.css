@@ -67,14 +67,16 @@ button.button5:hover{
 button.button2{
     display:inline-block;
     padding:0.5em 3em;
-    border:0.16em solid black;
+    border:0.2em solid #76A185;
+    border-radius: 3px;
     margin:0 0.3em 0.3em 0;
     box-sizing: border-box;
     text-decoration:none;
     text-transform:uppercase;
     font-weight:400;
-    color:black;
-    background-color: transparent;
+    color: white;
+    background-color:  #76A185;
+    
     text-align:center;
     transition: all 0.15s;
 }
@@ -92,6 +94,11 @@ button.button2:active{
     animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    width: 200px;
+    height: 70px;
+    border-color: #d4d4d4;
+    border-radius: 5px;
+
 }
 
 @keyframes changeColor {
