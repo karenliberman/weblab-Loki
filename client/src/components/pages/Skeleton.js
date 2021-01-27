@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
 import GoogleLogin, { GoogleLogout } from "react-google-login";
-const GOOGLE_CLIENT_ID = "195833754461-drg9a2g9abde0mlscautfq8dp01fsset.apps.googleusercontent.com";
+
+const GOOGLE_CLIENT_ID = "195833754461-bljcrgumk568k57aav8r6pke7anbsedj.apps.googleusercontent.com";
 
 import "../../utilities.css";
 import "./Skeleton.css";
