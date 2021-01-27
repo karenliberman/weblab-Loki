@@ -119,10 +119,127 @@ const rule5 = (index, cur_hand, last_card) => {
     };
     return [true, ""]
   }
+};
 
+/* if the last card was red place black and vice versa (if you have it)*/
+const rule6 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+
+  copy_hand.splice(index, 1);
+  let correct_color = getColor(last_card)
+  if (getColor(cur_card) !== correct_color) {
+    //if wrong color, checks if you could have played the right color
+    for (let i = 0; i < copy_hand.length; i++) {
+      const tempCard = copy_hand[i];
+      if (getColor(tempCard) === correct_color) {
+        return [false, "Rule 6 violation"];
+      }
+    };
+  }
+  return [true, ""]
+};
+
+/* all letter cards must be played first*/
+const rule7 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+
+  copy_hand.splice(index, 1);
+  let correct_values = [1, 11, 12, 13];
+
+  if (correct_values.includes(getValue(cur_card))) {
+    //if right value, return true
+    return [true, ""]
+
+  } else {
+    //if you didnt place a letter card but you had one return false
+    for (let i = 0; i < copy_hand.length; i++) {
+
+      const tempCard = copy_hand[i];
+      if (correct_values.includes(getValue(tempCard))) {
+        return [false, "Rule 7 violation"];
+      }
+    };
+  }
+  return  [true, ""]
+};
+
+/* only cards at even indexes are accepted*/
+const rule8 = (index, cur_hand, last_card) => {
+  
+  if (index % 2 === 0) {
+    return  [true, ""];
+  } else {
+    return [false, "Rule 8 violation"];
+  }
+  
+};
+
+/* only cards on the center third of the hand are accepted (inclusive)*/
+const rule9 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+
+  let thirdValue = copy_hand.length / 3.0;
+  
+  if ( index > Math.floor(thirdValue) && index < Math.ceiling(2*thirdValue) ) {
+    return [true, ""];
+  } else {
+    return [false, "Rule 9 violation"];
+  }
+};
+
+/* follow the alphabetical order of highest suits: (first) clubs, diamonds, hearts, spades (last) */
+const rule10 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+
+  copy_hand.splice(index, 1);
+  let suit_order = ["clubs", "diamonds", "hearts", "spades"];
+  let suit_index = suit_order.indexOf(cur_card.suit);
+  let lower_suits = suit_order.slice(0, suit_index);
+
+    //checks to see if you have any cards that should have gone first 
+    for (let i = 0; i < copy_hand.length; i++) {
+
+      const tempCardSuit = copy_hand[i].suit;
+      if (lower_suits.includes(tempCardSuit)) {
+        return [false, "Rule 10 violation"];
+      }
+    };
+  
+  return  [true, ""]
+};
+
+/* if you have a card lower than the last placed, you have to place it */
+const rule11 = (index, cur_hand, last_card) => {
+  let copy_hand = cur_hand.slice();
+  let cur_card = copy_hand[index];
+
+  copy_hand.splice(index, 1);
+  let lastCardValue = getValue(last_vard);
+  
+  //if the value you placed isn't lower than the last card
+  if (getValue(cur_card) >= lastCardValue){}
+
+    //checks to see if you had any cards that were lower. If yes, return false. otherwise, return true
+    for (let i = 0; i < copy_hand.length; i++) {
+
+      const tempCard = copy_hand[i];
+      if (getValue(tempCard) < lastCardValue) {
+        return [false, "Rule 11 violation"];
+      }
+    };
+  
+  return  [true, ""]
 };
 
 const rules = [rule1, rule2, rule3, rule4, rule5];
+
+//RULES CATEGORIES
+const rulesNumbers = [rule2, rule5, rule7, rule11];
+const rulesSuits = [rule1, rule4, rule6, rule10];
+const rulesPlacement = [rule3, rule8, rule9];
 
 const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index here
   console.log("Checks move");
