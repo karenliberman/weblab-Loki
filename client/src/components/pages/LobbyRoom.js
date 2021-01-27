@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { gamesocket, changeStatus } from "../../client-socket.js";
+import { gamesocket, returnLobby } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import { test, leave} from "../../client-socket.js";
 import GameCreate from "../modules/GameCreate.js";
@@ -115,7 +115,7 @@ class LobbyRoom extends Component {
           <div>
             {this.state.winner}
             <div>
-              <button onClick={() => changeStatus(this.props.roomId, "lobby")} > Return to Lobby </button>
+              <button onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
             </div>
             <Link to="/">
               <button onClick={() => leave(this.props.roomId)}> leave </button>
