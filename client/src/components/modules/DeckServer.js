@@ -21,7 +21,7 @@ class DeckServer extends Component {
         isTurn: false,
         violation: "<- Place a card on the pile",
         enemyCardNumber: new Array(7).fill(this.props.numCards),
-        enemies: this.props.players.slice(this.props.players.indexOf(this.props.userName), this.props.players.indexOf(this.props.userName)+1),
+        enemies: this.props.players,
 
     }
     
@@ -122,6 +122,8 @@ class DeckServer extends Component {
     this.setState({hand: newHand});
   };
 
+  
+
  
 
   render() {
@@ -143,12 +145,12 @@ class DeckServer extends Component {
             {[...Array(this.state.enemyCardNumber[1])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
           </div>}
-          {this.state.enemies.length > 0 && <div className="enemyBox"> 
+          { this.state.enemies.length > 0 && <div className="enemyBox"> 
             <p className="enemyText"> {this.state.enemies[0]+""} </p>
             <div className="enemyCardsContainer">
             {[...Array(this.state.enemyCardNumber[0])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
-          </div>}
+          </div> }
           { this.state.enemies.length > 2 && <div className="enemyBox"> 
             <p className="enemyText">{this.state.enemies[2]+""} </p>
             <div className="enemyCardsContainer">

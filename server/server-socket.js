@@ -320,7 +320,7 @@ module.exports = {
             game.to(room).emit("currentUser", user);
 
             if (winner) {
-              const message = `${user._id} has won the game!`
+              const message = user.name;
               game.to(room).emit("statusChange", "winner", message);
 
               // reset lobby values
