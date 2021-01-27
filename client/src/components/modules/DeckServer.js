@@ -91,7 +91,8 @@ class DeckServer extends Component {
     socket.removeAllListeners("hand");
     socket.removeAllListeners("updateDeck");
     socket.removeAllListeners("updateHand");
-    gamesocket.removeAllListeners("newLastCard");
+    gamesocket.removeAllListeners("actualLastCard");
+    gamesocket.removeAllListeners("violation");
   }
 
   onDragEnd = result => {

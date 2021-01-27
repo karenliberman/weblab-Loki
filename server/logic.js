@@ -14,13 +14,26 @@ const getValue = (card) => {
   return value;
 }
 
-const newRandomRules = () => {
-  let randomList = [];
+const newRandomRules = (numRules) => {
+  let randomList = [0, 1, 2];
+  let randomRules = [];
   const rand1 = Math.floor(Math.random()*4);
   const rand2 = Math.floor(Math.random()*4);
   const rand3 = Math.floor(Math.random()*3);
+
+  for (let i = 0; i < numRules; i++) {
+    const rand = Math.floor(Math.random()*3)
+    const realRand = randomList.splice(rand, 1);
+    if (realRand[0] === 0) {
+      randomRules.push([realRand[0], rand1]);
+    } else if (realRand[0] === 1) {
+      randomRules.push([realRand[0], rand2]);
+    } else if (realRand[0] === 2) {
+      randomRules.push([realRand[0], rand3])
+    }
+  }
   
-  return [rand1, rand2, rand3]
+  return randomRules;
 }
 
 const get_color = (cur_card) => {
@@ -179,7 +192,7 @@ const rule9 = (index, cur_hand, last_card) => {
 
   let thirdValue = copy_hand.length / 3.0;
   
-  if ( index > Math.floor(thirdValue) && index < Math.ceiling(2*thirdValue) + 1 ) {
+  if ( index > Math.floor(thirdValue) && index < Math.ceil(2*thirdValue) + 1 ) {
     return [true, ""];
   } else {
     return [false, "Rule 9 violation"];
@@ -248,13 +261,31 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
 
 
   for(let i = 0; i < rulesList.length; i++) {
-    const result = rules[rulesList[i]](index, cur_hand, lastCard);
+    if (rulesList[i][0] === 0) {
+      const result = rulesNumbers[rulesList[i][1]](index, cur_hand, lastCard);
 
-    if (!result[0]) {
-      isViolation = true;
-      violations.push(result[1]);
-      changeNumCards += 1;
-    };
+      if (!result[0]) {
+        isViolation = true;
+        violations.push(result[1]);
+        changeNumCards += 1;
+      };
+    } else if ( rulesList[i][0] === 1) {
+      const result = rulesSuits[rulesList[i][1]](index, cur_hand, lastCard);
+
+      if (!result[0]) {
+        isViolation = true;
+        violations.push(result[1]);
+        changeNumCards += 1;
+      };
+    } else if ( rulesList[i][0] === 2) {
+      const result = rulesPlacement[rulesList[i][1]](index, cur_hand, lastCard);
+
+      if (!result[0]) {
+        isViolation = true;
+        violations.push(result[1]);
+        changeNumCards += 1;
+      };
+    }
   };
 
   return [isViolation, violations, changeNumCards];
@@ -288,7 +319,7 @@ const playerMove = (index, hand, deck, lastCard, rules) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
-    let moveResults = validMove(index, newHand, lastCard, [3]);
+    let moveResults = validMove(index, newHand, lastCard, rules);
     let isViolation = moveResults[0];
     let violations = moveResults[1];
     let changeNumCards = moveResults[2];
