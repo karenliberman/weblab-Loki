@@ -40,9 +40,12 @@ class CreateLobby extends Component {
     render() {
         return (
             <div>
-                <Link to={`/lobby/${this.state.roomId}`}>
+                {this.props.mode === "singleplayer" ? (<Link to={`/lobby/${this.state.roomId}`}>
+                    <button class="button2" onClick={() => createLobby(this.state.roomId)}>practice</button>
+                </Link>) : (<Link to={`/lobby/${this.state.roomId}`}>
                     <button class="button2" onClick={() => createLobby(this.state.roomId)}>create room</button>
-                </Link>
+                </Link>)}
+                
             </div>
 
         )

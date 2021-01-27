@@ -135,7 +135,7 @@ class LobbyRoom extends Component {
 
     return (
       <div>
-        Not joined yet!
+        <h1 class="u-textCenter">Error: No Lobby Found!</h1>
       </div>
     )
   }
