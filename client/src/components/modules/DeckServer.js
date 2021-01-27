@@ -65,7 +65,7 @@ class DeckServer extends Component {
       //THIS WILL UPDATE THE ENEMY CARDS!
       //if its your action, don't update
       if (this.props.playerTurn !== this.props.userName) {
-          let enemyIndex = this.state.enemies.indexOf(playerTurn);
+          let enemyIndex = this.state.enemies.indexOf(this.props.playerTurn);
           let tempEnemyCards = this.state.enemyCardNumber.slice();
         //if there was a violation, see the number of cards changed
         if (isViolation) {
@@ -81,7 +81,7 @@ class DeckServer extends Component {
     });
 
     /* Kill if broken */
-    if (this.props.playerTurn == this.props.userName) {
+    if (this.props.playerTurn === this.props.userName) {
       this.setState({isTurn: true});
     }
   }
@@ -137,22 +137,22 @@ class DeckServer extends Component {
 
         <div className="enemyBoxContainer-top">
           
-          <div className="enemyBox"> 
-            <p className="enemyText"> {this.props.players[2]+""} </p>
+          { this.state.enemies.length > 1 && <div className="enemyBox"> 
+            <p className="enemyText"> {this.state.enemies[1]+""} </p>
             <div className="enemyCardsContainer">
-            {[...Array(this.state.enemyCardNumber[2])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            {[...Array(this.state.enemyCardNumber[1])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
-          </div>
-          <div className="enemyBox"> 
-            <p className="enemyText"> enemy box 1 </p>
+          </div>}
+          {this.state.enemies.length > 0 && <div className="enemyBox"> 
+            <p className="enemyText"> {this.state.enemies[0]+""} </p>
             <div className="enemyCardsContainer">
             {[...Array(this.state.enemyCardNumber[0])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
-          </div>
-          { 1>2 && <div className="enemyBox"> 
-            <p className="enemyText"> enemy box 3 </p>
+          </div>}
+          { this.state.enemies.length > 2 && <div className="enemyBox"> 
+            <p className="enemyText">{this.state.enemies[2]+""} </p>
             <div className="enemyCardsContainer">
-            {[...Array(this.state.enemyCardNumber[3])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            {[...Array(this.state.enemyCardNumber[2])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
           </div>}
 
@@ -167,18 +167,18 @@ class DeckServer extends Component {
 
           <div className="enemyBoxContainer-sides">
             
-            <div className="enemyBox"> 
-              <p className="enemyText"> enemy box 4 </p>
+            {this.state.enemies.length > 3 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[3]+""} </p>
               <div className="enemyCardsContainer">
-              {[...Array(this.state.enemyCardNumber[4])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[3])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
-            </div>
-            <div className="enemyBox"> 
-              <p className="enemyText"> enemy box 6 </p>
+            </div>}
+            {this.state.enemies.length > 5 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[5]+""} </p>
               <div className="enemyCardsContainer">
-              {[...Array(this.state.enemyCardNumber[6])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[5])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
-            </div>
+            </div>}
 
           </div>
 
@@ -203,18 +203,18 @@ class DeckServer extends Component {
 
           <div className="enemyBoxContainer-sides">
             
-          <div className="enemyBox"> 
-              <p className="enemyText"> enemy box 5 </p>
+          {this.state.enemies.length > 4 &&<div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[4]+""} </p>
               <div className="enemyCardsContainer">
-              {[...Array(this.state.enemyCardNumber[5])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[4])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
-            </div>
-            <div className="enemyBox"> 
-              <p className="enemyText"> enemy box 7 </p>
+            </div>}
+            {this.state.enemies.length > 6 && <div className="enemyBox"> 
+              <p className="enemyText"> {this.state.enemies[6]+""} </p>
               <div className="enemyCardsContainer">
-              {[...Array(this.state.enemyCardNumber[7])].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              {[...Array(this.state.enemyCardNumber[6])].map((e, i) => <div className="enemyCard" key={i}></div>)}
               </div>
-            </div>
+            </div>}
 
           </div>
         </div>
