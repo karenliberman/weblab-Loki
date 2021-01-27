@@ -11,19 +11,17 @@ class Rules extends Component {
 
   render() {
     return (
-    <div className="EpicRules-background">
-      <div className="EpicRules-alpha">
-      <div className="EpicRules-container">
+    <div>
+      <div className="rule-container">
         Put red cards (hearts, diamonds) before black ones (spades, clubs)        
       </div>
 
-      <div className="EpicRules-container">
+      <div className="rule-container">
         Place the high card! (A is the lowest, K is the highest)
       </div>
 
-      <div className="EpicRules-container">
+      <div className="rule-container">
         More rules to come
-      </div>
       </div>
     </div>
     );

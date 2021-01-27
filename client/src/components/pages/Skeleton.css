@@ -12,6 +12,13 @@
 
 }
 
+html, body {
+    max-width: 100%;
+}
+
+.skeleton-buttons button {
+    margin-top: 100000px;
+}
 /* CARDS CSS SECTION NEEDS A CRAP TON OF CHANGES OMG 
 I recommend making a separate Card.css folder because a ton of changes are needed
 this is just a basic outline that you can follow (if you want) */
