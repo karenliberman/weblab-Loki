@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: sideways;
     
-    background: #968C8C;
+    background: #ADADAD;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     width: 700px;
@@ -17,16 +17,34 @@
     margin-right: auto;
 }
 
+.gameTableAndEnemyContainter {
+    display: flex;
+    flex-direction: row;
+}
+
 .enemyBoxContainer-top {
     display: flex;
     flex-direction: row;
 
     width: 800px;
-    height: 175px;
-    background-color: burlywood;
+    height: 150px;
 
     align-items: center;
     justify-content:space-evenly;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.enemyBoxContainer-sides {
+    display: flex;
+    flex-direction: column;
+
+    width: 220px;
+    height: 310px;
+
+    align-items: center;
+    justify-content:space-between;
 
     margin-left: auto;
     margin-right: auto;
@@ -85,7 +103,7 @@ margin-left: auto;
 margin-right: auto;
 padding: 50px;
 
-background: #174A35;
+background: #006039;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 

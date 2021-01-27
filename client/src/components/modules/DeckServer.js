@@ -127,19 +127,31 @@ class DeckServer extends Component {
 
         </div>
         
-        <div className="gameTableAndEnemyContainter">
-
-          <div className="enemyBoxContainer-left">
-            
-            <div> enemy box 4 </div>
-            <div> enemy box 6 </div>
-
-          </div>
-
-          <div className="u-textCenter">
+        <div className="u-textCenter">
               {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
               {console.log("ITS ME:", this.props.userName)}
           </div>
+
+        <div className="gameTableAndEnemyContainter">
+
+          <div className="enemyBoxContainer-sides">
+            
+            <div className="enemyBox"> 
+              <p className="enemyText"> enemy box 4 </p>
+              <div className="enemyCardsContainer">
+              {[...Array(4)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>
+            <div className="enemyBox"> 
+              <p className="enemyText"> enemy box 6 </p>
+              <div className="enemyCardsContainer">
+              {[...Array(1)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>
+
+          </div>
+
+          
 
           <div className="gameTable">
 
@@ -158,10 +170,20 @@ class DeckServer extends Component {
 
           </div>
 
-          <div className="enemyBoxContainer-right">
+          <div className="enemyBoxContainer-sides">
             
-            <div> enemy box 5 </div>
-            <div> enemy box 7 </div>
+          <div className="enemyBox"> 
+              <p className="enemyText"> enemy box 5 </p>
+              <div className="enemyCardsContainer">
+              {[...Array(9)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>
+            <div className="enemyBox"> 
+              <p className="enemyText"> enemy box 7 </p>
+              <div className="enemyCardsContainer">
+              {[...Array(6)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+              </div>
+            </div>
 
           </div>
         </div>
@@ -190,8 +212,6 @@ class DeckServer extends Component {
           )}
         </Droppable>
         
-        <br/>
-        <br/> 
         
         </DragDropContext>
       </div>
