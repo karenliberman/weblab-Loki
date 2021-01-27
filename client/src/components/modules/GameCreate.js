@@ -143,7 +143,7 @@ class GameCreate extends Component {
       <div>
           {this.props.userId && (<DeckServer winner={this.state.winner} 
           playerTurn={this.state.lastPlayerTurn}  lastCard={this.state.lastCard} userName={this.props.userName}
-          players={this.props.players} numCards={this.props.numCards}/>)}
+          players={this.props.players} numCards={this.props.numCards} newTurn={this.state.playerTurn}/>)}
       </div>
     );
   }

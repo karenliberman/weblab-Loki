@@ -169,7 +169,7 @@ class DeckServer extends Component {
         </div>
         
         <div className="u-textCenter">
-              {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
+              {this.props.playerTurn ? (<h3>{this.props.nextPlayer}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
               {console.log("ITS ME:", this.props.userName)}
           </div>
 
@@ -248,15 +248,6 @@ class DeckServer extends Component {
         </Droppable>
         <br/>
         <br/>
-
-        <Droppable droppableId={"discardedContainer"} direction="horizontal">
-          {(provided) => (
-            <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-              {this.state.cards.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id}/>))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
         
         
         </DragDropContext>
