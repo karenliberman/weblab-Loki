@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {get} from "../../utilities";
 import "./Rules.css";
 import "./EpicRules.css";
+import "./Lobby.css";
 
 
 class Rules extends Component {
@@ -12,6 +13,7 @@ class Rules extends Component {
   render() {
     return (
     <div>
+      <h1 class="glow-green" style={{textAlign:"center"}}>Rules</h1>
       <div className="rule-container">
         <h2> Objective</h2>
         <p> Your goal is to get rid of all your cards. When it is your turn, you can 
