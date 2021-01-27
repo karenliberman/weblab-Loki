@@ -6,7 +6,8 @@ import GameCreate from "../modules/GameCreate.js";
 import WaitingRoom from "../modules/WaitingRoom.js";
 import "./Rules.css";
 import { get, post } from "../../utilities.js";
-
+import Confetti from "react-confetti";
+//import {useWindowSize} from "react-use";
 
 class LobbyRoom extends Component {
   constructor(props) {
@@ -89,6 +90,8 @@ class LobbyRoom extends Component {
 
   render() {
     let players;
+    //const {width, height} = useWindowSize();
+
     if (this.state.players.length === 0) {
       players = [];
     } else {
@@ -106,7 +109,6 @@ class LobbyRoom extends Component {
         return (
           <div>
             <div className="u-textCenter">
-              <h2 className="glow-red">Welcome to Loki</h2>
             </div>
             <Link to="/">
               <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
@@ -117,14 +119,17 @@ class LobbyRoom extends Component {
         );
       } else if (this.state.pageStatus === "winner") {
         return (
-          <div>
-            {this.state.winner}
+          <div className="u-textCenter">
+            <h1>{this.state.winner}</h1>
             <div>
-              <button onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
+              <button className="button2" onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
             </div>
             <Link to="/">
               <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
             </Link>
+            <div>             
+              <Confetti/>
+            </div>
           </div>
         )
       }

@@ -18,8 +18,6 @@ class DeckServer extends Component {
         winner: null,
         placedCard: "placeCard",
         lastCard: "placeCard",
-        isTurn: false,
-
     }
   }
 
@@ -50,9 +48,6 @@ class DeckServer extends Component {
     })
 
     /* Kill if broken */
-    if (this.props.playerTurn == this.props.userName) {
-      this.setState({isTurn: true});
-    }
   }
 
   componentWillUnmount = () => {
@@ -132,7 +127,7 @@ class DeckServer extends Component {
         <Droppable droppableId={"handContainer"} direction="horizontal">
         {(provided) => (
 
-        <div className = {`${this.state.isTurn}-isTurn handContainer`} ref={provided.innerRef} {...provided.droppableProps}>
+        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
           {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
           {provided.placeholder}
         </div>

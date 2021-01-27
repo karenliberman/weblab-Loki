@@ -210,7 +210,7 @@ h1:hover {
     border-color: #006039;
     background: #006039;
     color: white;
-    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
 }
 
 .second:hover {
