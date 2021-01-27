@@ -42,9 +42,7 @@ class Skeleton extends Component {
             <div className="skeleton-buttons">
               <Link to="/lobby"><button className="button5">Play Now</button></Link>
               <Link to="/rules"><button className="button5">How to Play</button></Link>
-            </div>
-            {/*<button class="btn first">Sign in with Google </button>  */}
-      
+            </div>      
           </div>) : (
           
           <div class="falling-container">
