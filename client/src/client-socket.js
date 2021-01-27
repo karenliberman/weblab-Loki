@@ -32,6 +32,24 @@ export const leave = (room) => {
   gamesocket.removeAllListeners();
 };
 
-export const changeStatus = (room, page) => {
-  gamesocket.emit("changeStatus", room, page);
-}
+export const startGame = (room) => {
+  gamesocket.emit("startGame", room);
+};
+
+export const returnLobby = (room) => {
+  gamesocket.emit("returnLobby", room);
+};
+
+export const subtractCards = (room, numCards) => {
+  if (numCards > 5) {
+    const newNumCards = numCards - 1;
+    gamesocket.emit("updateNumCards", room, newNumCards);
+  }
+};
+
+export const addCards = (room, numCards) => {
+  if (numCards < 12) {
+    const newNumCards = numCards + 1;
+    gamesocket.emit("updateNumCards", room, newNumCards)
+  }
+};

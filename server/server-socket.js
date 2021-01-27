@@ -14,12 +14,10 @@ const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const getListofPlayers = (room) => {
-  try {
+  if (rooms[room]) {
     const players = Object.keys(rooms[room]).slice(3);
     return players;
-  } catch (error) {
-    console.log(error);
-  }
+  };
 };
 
 const getUserFromFilterSocketID = (socketid, filter) => {
@@ -258,29 +256,27 @@ module.exports = {
         };
       });
 
-      socket.on("changeStatus", (room, page) => {
-        if (page === "lobby") {
-          game.to(socket.id).emit("statusChange", page, null);
-          changeReadyStatus(room, [socket.id], true);
-        } else if (page === "game") {
-          if(checkIfAllReady(room)) {
-            game.to(room).emit("statusChange", page, null);
-            // get rules
-            const rules = logic.newRandomRules(1);
-            rooms[room].rules = rules;
-            // get first card to the stack
-            const lastCard = logic.newCard();
-            rooms[room].lastCard = lastCard;
-            game.to(room).emit("newLastCard", lastCard);
-            // starts game
-            rooms[room][socket.id].isTurn = true;
-            rooms[room].pageStatus = "game";
-            game.to(room).emit("nextUser", rooms[room][socket.id].user)
-          };
-        } else {
-          game.to(room).emit("statusChange", page, null);
+      socket.on("startGame", (room) => {
+        if(checkIfAllReady(room)) {
+          game.to(room).emit("statusChange", "game", null);
+          // get rules
+          const rules = logic.newRandomRules(1);
+          rooms[room].rules = rules;
+          // get first card to the stack
+          const lastCard = logic.newCard();
+          rooms[room].lastCard = lastCard;
+          game.to(room).emit("newLastCard", lastCard);
+          // starts game
+          rooms[room][socket.id].isTurn = true;
+          rooms[room].pageStatus = "game";
+          game.to(room).emit("nextUser", rooms[room][socket.id].user)
         };
       });
+
+      socket.on("returnLobby", (room) => {
+        game.to(socket.id).emit("statusChange", "lobby", null);
+        changeReadyStatus(room, [socket.id], true);
+      })
 
       socket.on("checkHost", (room) => {
         const user = getUserFromFilterSocketID(socket.id, "/game#")
@@ -289,6 +285,10 @@ module.exports = {
             game.to(socket.id).emit("newHost", true);
           }
         }
+      })
+
+      socket.on("updateNumCards", (room, numCards) => {
+        game.to(room).emit("newNumCards", numCards);
       })
 
       // use for playing the game
@@ -308,11 +308,11 @@ module.exports = {
             const newState = logic.playerMove(index, hand, deck, lastCard, rules);
             const newHand = newState[0];
             const newDeck = newState[1];
-            const newLastCard = newState[2][0];
-            const isViolation = newState[4];
-            const violations = newState[5];
-            const changeNumCards = newState[6];
-            const winner = newState[3];
+            const winner = newState[2];
+            const isViolation = newState[3];
+            const violations = newState[4];
+            const changeNumCards = newState[5];
+
 
             // Sets the next turn to the next player
             nextTurn(room, socket);
@@ -332,7 +332,7 @@ module.exports = {
               // isViolation(whether there is a violation), violations(array of messages with the violations/empty if no violations), changeNumCards(the change of numCards; -1 if is correct)
               game.to(room).emit("violation", isViolation, violations, changeNumCards );
               // the card that is shown in the stack
-              game.to(room).emit("newLastCard", newLastCard);
+              rooms[room].lastCard = hand[index]
               // the actual last card
               game.to(room).emit("actualLastCard", hand[index])
             }

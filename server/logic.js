@@ -15,11 +15,13 @@ const getValue = (card) => {
 }
 
 const newRandomRules = (numRules) => {
+  let listofNumbers = [0, 1, 2, 3, 4]
   let randomList = [];
   for (let i = 0; i < numRules; i++) {
     // hardcoded to 5 rules (change later)
-    const rand = Math.floor(Math.random()*5);
-    randomList.push(rand);
+    const rand = Math.floor(Math.random()*(listofNumbers.length));
+    const remove = listofNumbers.splice(rand, 1)[0];
+    randomList.push(remove);
   };
   return randomList;
 }
@@ -130,8 +132,8 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
   let changeNumCards = 0;
 
   for(let i = 0; i < rulesList.length; i++) {
-    const rule = rules[rulesList[i]];
-    const result = rule(index, cur_hand, lastCard);
+    console.log(rulesList);
+    const result = rules[rulesList[i]](index, cur_hand, lastCard);
 
     if (!result[0]) {
       isViolation = true;
@@ -170,7 +172,6 @@ const checkWin = (hand) => {
 const playerMove = (index, hand, deck, lastCard, rules) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
-    let newLastCard = lastCard;
 
     let moveResults = validMove(index, newHand, lastCard, rules);
     let isViolation = moveResults[0];
@@ -180,17 +181,18 @@ const playerMove = (index, hand, deck, lastCard, rules) => {
     if (!isViolation) {
         let removedCard = newHand.splice(index, 1);
         newDeck = newDeck.concat(removedCard);
-        newLastCard = removedCard;
         changeNumCards = -1;
         violations = ["No violations"]
     } else {
-        newHand = violation(newHand, changeNumCards);
+      let removedCard = newHand.splice(index, 1);
+      newDeck = newDeck.concat(removedCard);
+      newHand = violation(newHand, changeNumCards);
     };
 
     const winner =  checkWin(newHand);
 
 
-    return([newHand, newDeck, newLastCard, winner, isViolation, violations, changeNumCards]);
+    return([newHand, newDeck, winner, isViolation, violations, changeNumCards]);
 
 };
 

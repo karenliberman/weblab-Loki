@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { test, leave, changeStatus } from "../../client-socket.js";
+import { test, leave, startGame, subtractCards, addCards } from "../../client-socket.js";
 import { Link } from "@reach/router";
 import "../pages/Rules.css";
 import "./WaitingRoom.css"
 
 class WaitingRoom extends Component {
     constructor(props) {
-        super(props);
+      super(props);
     };
 
     render () {
@@ -28,7 +28,13 @@ class WaitingRoom extends Component {
 
 
                   <div>
-                  {this.props.host && (<button class="button2 bigboybutton" onClick={() => changeStatus(this.props.roomId, "game")} > Start Game </button>)}
+                  {this.props.host && (<button class="button2 bigboybutton" onClick={() => startGame(this.props.roomId)} > Start Game </button>)}
+                  </div>
+
+                  <div>
+                    {this.props.host && (<button className="button2" onClick={() => subtractCards(this.props.roomId, this.props.numCards)}> {"<"} </button>)}
+                    {this.props.numCards}
+                    {this.props.host && (<button className="button2" onClick={() => addCards(this.props.roomId, this.props.numCards)}> {">"} </button>)}
                   </div>
 
 

@@ -29,7 +29,7 @@ class GameCreate extends Component {
       numCardstoPlayer[players] = numCards;
     };
 
-    return numCardstoPlayer
+    return numCardstoPlayer;
   }
 
   componentDidMount = () => {
@@ -75,7 +75,7 @@ class GameCreate extends Component {
   }
   newRandomHand = () => {
     let hand = [];
-    for (let i=0; i < CARD_IN_HAND; i++) {
+    for (let i=0; i < this.props.numCards; i++) {
       let newCard = this.newCard();
       hand.push(newCard);
     }
