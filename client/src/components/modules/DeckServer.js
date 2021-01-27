@@ -19,7 +19,7 @@ class DeckServer extends Component {
         placedCard: "placeCard",
         lastCard: "placeCard",
         isTurn: false,
-        violation: "<- Place a card on the pile",
+        violation: ["<- Place a card on the pile"],
         enemyCardNumber: new Array(7).fill(this.props.numCards),
         enemies: this.getEnemies(),
 
@@ -208,7 +208,8 @@ class DeckServer extends Component {
             </Droppable>
 
             <div>
-              <p>{this.state.violation}</p>
+            {this.state.violation.map((violationName, index) => <p key={index}>{violationName}</p>)}
+            
             </div>
 
           </div>
