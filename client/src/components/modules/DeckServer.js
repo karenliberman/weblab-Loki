@@ -209,7 +209,7 @@ class DeckServer extends Component {
             )}
             </Droppable>
 
-            <div>
+            <div style={{marginLeft: '20px'}}>
             {this.state.violation.map((violationName, index) => <p key={index}>{violationName}</p>)}
             
             </div>
