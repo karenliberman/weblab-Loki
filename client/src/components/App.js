@@ -4,11 +4,10 @@ import { Router, Redirect } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
-import Game from "./pages/Game.js";
 import Rules from "./pages/Rules.js";
 import Lobby from "./pages/Lobby.js";
-import GameServer from "./pages/ServerGame.js";
 import LobbyRoom from "./pages/LobbyRoom.js";
+import ServerGame from "./pages/ServerGame.js";
 
 import "../utilities.css";
 

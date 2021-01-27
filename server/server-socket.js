@@ -261,7 +261,7 @@ module.exports = {
         if(checkIfAllReady(room)) {
           game.to(room).emit("statusChange", "game", null);
           // get rules
-          const rules = logic.newRandomRules(1);
+          const rules = logic.newRandomRules(2);
           rooms[room].rules = rules;
           // get first card to the stack
           const lastCard = logic.newCard();
@@ -339,7 +339,7 @@ module.exports = {
             }
           };
         } else {
-          const newHand = logic.violation(hand, 1);
+          const newHand = logic.violation(hand);
           const newDeck = deck;
           game.to(socket.id).emit("update", newHand, newDeck);
           game.to(socket.id).emit("violation", true, ["Playing when is not your turn!"], 1 );
