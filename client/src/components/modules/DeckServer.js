@@ -125,7 +125,7 @@ class DeckServer extends Component {
   getEnemies = () => {
     //makes a copy of the players array
     let enemies = this.props.players.slice();
-    enemies.splice(this.props.players.indexOf(this.props.userName)) //removes your username from the enemies array
+    enemies.splice(this.props.players.indexOf(this.props.userName), 1) //removes your username from the enemies array
 
     return enemies;
 
