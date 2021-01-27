@@ -20,7 +20,7 @@ class GameCreate extends Component {
         lastCard: undefined,
         playerTurn: undefined,
         numCardsPerPlayer: this.getNumCardsofPlayers(this.props.players, this.props.numCards),
-        userName: undefined,
+        lastPlayerTurn: undefined,
     }
   }
 
@@ -62,7 +62,7 @@ class GameCreate extends Component {
 
     gamesocket.on("currentUser", (user) => {
       console.log(user.name);
-      this.setState({userName: user.name});
+      this.setState({lastPlayerTurn: user.name});
     })
 
   }
@@ -142,7 +142,7 @@ class GameCreate extends Component {
 
       <div>
           {this.props.userId && (<DeckServer winner={this.state.winner} 
-          playerTurn={this.state.playerTurn}  lastCard={this.state.lastCard} userName={this.props.userName}
+          playerTurn={this.state.lastPlayerTurn}  lastCard={this.state.lastCard} userName={this.props.userName}
           players={this.props.players} numCards={this.props.numCards}/>)}
       </div>
     );

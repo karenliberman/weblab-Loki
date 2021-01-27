@@ -65,6 +65,8 @@ class DeckServer extends Component {
       //THIS WILL UPDATE THE ENEMY CARDS!
       //if its your action, don't update
       if (this.props.playerTurn !== this.props.userName) {
+          console.log(this.props.playerTurn);
+          console.log(this.props.userName);
           let enemyIndex = this.state.enemies.indexOf(this.props.playerTurn);
           let tempEnemyCards = this.state.enemyCardNumber.slice();
         //if there was a violation, see the number of cards changed
