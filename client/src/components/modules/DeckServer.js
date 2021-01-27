@@ -150,12 +150,12 @@ class DeckServer extends Component {
             {[...Array(this.state.enemyCardNumber[1])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
           </div>}
-          {this.state.enemies.length > 0 && <div className="enemyBox"> 
+          { this.state.enemies.length > 0 && <div className="enemyBox"> 
             <p className="enemyText"> {this.state.enemies[0]+""} </p>
             <div className="enemyCardsContainer">
             {[...Array(this.state.enemyCardNumber[0])].map((e, i) => <div className="enemyCard" key={i}></div>)}
             </div>
-          </div>}
+          </div> }
           { this.state.enemies.length > 2 && <div className="enemyBox"> 
             <p className="enemyText">{this.state.enemies[2]+""} </p>
             <div className="enemyCardsContainer">
