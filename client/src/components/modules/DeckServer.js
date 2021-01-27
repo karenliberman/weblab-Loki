@@ -107,10 +107,23 @@ class DeckServer extends Component {
         <div className="enemyBoxContainer-top">
           
           <div className="enemyBox"> 
-          <p className="enemyText">enemy box 2  </p>
+            <p className="enemyText"> enemy box 2 </p>
+            <div className="enemyCardsContainer">
+            {[...Array(8)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
           </div>
-          <div className="enemyBox"> enemy box 1 </div>
-          <div className="enemyBox"> enemy box 3 </div>
+          <div className="enemyBox"> 
+            <p className="enemyText"> enemy box 1 </p>
+            <div className="enemyCardsContainer">
+            {[...Array(2)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
+          </div>
+          <div className="enemyBox"> 
+            <p className="enemyText"> enemy box 3 </p>
+            <div className="enemyCardsContainer">
+            {[...Array(20)].map((e, i) => <div className="enemyCard" key={i}></div>)}
+            </div>
+          </div>
 
         </div>
         
