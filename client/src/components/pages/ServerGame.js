@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import GameCreate from "../modules/GameCreate.js";
+import "../../utilities.css";
 
 class ServerGame extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class ServerGame extends Component {
 
   render() {
     return (
-      <div>
+      <div className="u-textCenter trump2020">
         <h2> reload the page to see cards </h2>
 
         <p>Your deck</p>

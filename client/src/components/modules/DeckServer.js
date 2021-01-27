@@ -18,6 +18,7 @@ class DeckServer extends Component {
         winner: null,
         placedCard: "placeCard",
         lastCard: "placeCard",
+        isTurn: false,
 
     }
   }
@@ -47,6 +48,11 @@ class DeckServer extends Component {
       
       
     })
+
+    /* Kill if broken */
+    if (this.props.playerTurn == this.props.userName) {
+      this.setState({isTurn: true});
+    }
   }
 
   componentWillUnmount = () => {
@@ -85,6 +91,8 @@ class DeckServer extends Component {
  
 
   render() {
+
+
     
     return (
 
@@ -92,8 +100,14 @@ class DeckServer extends Component {
 
         <DragDropContext onDragEnd={this.onDragEnd}
         >
+        
 
-        Target
+        <div className="u-textCenter">
+            {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
+            {console.log("ITS ME:", this.props.userName)}
+        
+        </div>
+
         <div className="gameTable">
 
         <Droppable droppableId={"targetContainer"} direction="horizontal">
@@ -109,9 +123,7 @@ class DeckServer extends Component {
         )}
         </Droppable>
 
-          <div>
-             {this.props.playerTurn}'s Turn
-          </div>
+          
 
         </div>
         <br/>
@@ -120,9 +132,9 @@ class DeckServer extends Component {
         <Droppable droppableId={"handContainer"} direction="horizontal">
         {(provided) => (
 
-        <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>
-        {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
-        {provided.placeholder}
+        <div className = {`${this.state.isTurn}-isTurn handContainer`} ref={provided.innerRef} {...provided.droppableProps}>
+          {this.state.hand.map((card, index) => (<Card value={card.value} index={index} key={card._id} suit={card.suit} _id={card._id} playerMove={() => move(index, this.state.hand, this.state.cards)}/>))}
+          {provided.placeholder}
         </div>
 
         )}
@@ -131,7 +143,6 @@ class DeckServer extends Component {
         <br/>
 
 
-        Discard Pile
         <Droppable droppableId={"discardedContainer"} direction="horizontal">
         {(provided) => (
         <div className = "handContainer" ref={provided.innerRef} {...provided.droppableProps}>

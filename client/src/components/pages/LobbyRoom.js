@@ -105,11 +105,11 @@ class LobbyRoom extends Component {
       } else if (this.state.pageStatus === "game") {
         return (
           <div>
-            <h2> reload the page to see cards </h2>
-
-            <p>Your deck</p>
+            <div className="u-textCenter">
+              <h2 className="glow-red">Welcome to Loki</h2>
+            </div>
             <Link to="/">
-              <button onClick={() => leave(this.props.roomId)}> leave </button>
+              <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
             </Link>
 
             {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={this.state.numCards}/>)}
@@ -123,7 +123,7 @@ class LobbyRoom extends Component {
               <button onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
             </div>
             <Link to="/">
-              <button onClick={() => leave(this.props.roomId)}> leave </button>
+              <button className="button2" onClick={() => leave(this.props.roomId)}> leave </button>
             </Link>
           </div>
         )

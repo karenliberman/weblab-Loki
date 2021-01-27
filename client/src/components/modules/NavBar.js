@@ -29,6 +29,7 @@ class NavBar extends Component {
           )}
           
           {this.props.userId ? (
+            <Link to="/">
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"
@@ -36,7 +37,9 @@ class NavBar extends Component {
               onFailure={(err) => console.log(err)}
               className="go-right"
             />
+            </Link>
           ) : (
+            
             <GoogleLogin
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Login"
@@ -44,6 +47,7 @@ class NavBar extends Component {
               onFailure={(err) => console.log(err)}
               className="go-right"
             />
+            
           )}
         </div>
       </>

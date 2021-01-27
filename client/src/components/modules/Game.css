@@ -17,6 +17,10 @@
     margin-right: auto;
 }
 
+.true-isTurn {
+    border: 2px solid red;
+}
+
 .gameTable {
 
 width: 500px;
