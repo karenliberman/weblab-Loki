@@ -198,6 +198,7 @@ module.exports = {
         socket.join(room);
         game.to(room).emit("newPlayer", user);
         console.log(`A player has joined room ${room}`, rooms[room]);
+        console.log(rooms);
       });
 
       // now it doesn't rejoin

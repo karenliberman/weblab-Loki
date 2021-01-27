@@ -217,7 +217,7 @@ const rule11 = (index, cur_hand, last_card) => {
   let cur_card = copy_hand[index];
 
   copy_hand.splice(index, 1);
-  let lastCardValue = getValue(last_vard);
+  let lastCardValue = getValue(last_card);
   
   //if the value you placed isn't lower than the last card
   if (getValue(cur_card) >= lastCardValue){}
@@ -247,9 +247,10 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
   let isViolation = false;
   let violations = [];
   let changeNumCards = 0;
+  console.log(rulesList);
+
 
   for(let i = 0; i < rulesList.length; i++) {
-    console.log(rulesList);
     const result = rules[rulesList[i]](index, cur_hand, lastCard);
 
     if (!result[0]) {
@@ -260,7 +261,6 @@ const validMove = (index, cur_hand, lastCard, rulesList) => { //add rule_index h
   };
 
   return [isViolation, violations, changeNumCards];
-
 
 };
 

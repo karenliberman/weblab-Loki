@@ -40,7 +40,7 @@ class WaitingRoom extends Component {
 
                   <div>
                   <Link to="/">
-                    <button class="button2" onClick={() => leave(this.props.roomId)}> leave </button>
+                    <button class="button2"> leave </button>
                   </Link>
                   </div>
 
