@@ -112,7 +112,7 @@ class LobbyRoom extends Component {
               <button className="button2" > leave </button>
             </Link>
 
-            {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={this.state.numCards}/>)}
+            {this.props.userId && (<GameCreate userId={this.props.userId} gameId={this.props.roomId} players={players} numCards={this.state.numCards} userName={this.props.userName}/>)}
           </div>
         );
       } else if (this.state.pageStatus === "winner") {

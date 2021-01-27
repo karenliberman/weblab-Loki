@@ -339,10 +339,10 @@ module.exports = {
             }
           };
         } else {
-          const newHand = logic.violation(hand);
+          const newHand = logic.violation(hand, 1);
           const newDeck = deck;
           game.to(socket.id).emit("update", newHand, newDeck);
-          game.to(room).emit("violation", true, ["Playing when is not your turn!"], 1 );
+          game.to(socket.id).emit("violation", true, ["Playing when is not your turn!"], 1 );
         };
 
         

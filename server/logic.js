@@ -14,16 +14,13 @@ const getValue = (card) => {
   return value;
 }
 
-const newRandomRules = (numRules) => {
-  let listofNumbers = [0, 1, 2, 3, 4]
+const newRandomRules = () => {
   let randomList = [];
-  for (let i = 0; i < numRules; i++) {
-    // hardcoded to 5 rules (change later)
-    const rand = Math.floor(Math.random()*(listofNumbers.length));
-    const remove = listofNumbers.splice(rand, 1)[0];
-    randomList.push(remove);
-  };
-  return randomList;
+  const rand1 = Math.floor(Math.random()*4);
+  const rand2 = Math.floor(Math.random()*4);
+  const rand3 = Math.floor(Math.random()*3);
+  
+  return [rand1, rand2, rand3]
 }
 
 const get_color = (cur_card) => {
@@ -291,7 +288,7 @@ const playerMove = (index, hand, deck, lastCard, rules) => {
     let newHand = hand.slice();
     let newDeck = deck.slice();
 
-    let moveResults = validMove(index, newHand, lastCard, rules);
+    let moveResults = validMove(index, newHand, lastCard, [3]);
     let isViolation = moveResults[0];
     let violations = moveResults[1];
     let changeNumCards = moveResults[2];
