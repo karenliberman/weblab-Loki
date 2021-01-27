@@ -40,7 +40,7 @@ class Skeleton extends Component {
 
           {this.props.userId ? (<div className="form-box box-shadow">
             <div className="skeleton-buttons">
-              <Link to="/lobby"><button className="button5">Play Now</button></Link>
+              <Link to="/lobby"><button className="button5">  Play Now  </button></Link>
               <Link to="/rules"><button className="button5">How to Play</button></Link>
             </div>
             {/*<button class="btn first">Sign in with Google </button>  */}
