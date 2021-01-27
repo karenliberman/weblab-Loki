@@ -328,7 +328,6 @@ module.exports = {
               // isViolation(whether there is a violation), violations(array of messages with the violations/empty if no violations), changeNumCards(the change of numCards; -1 if is correct)
               game.to(room).emit("violation", isViolation, violations, changeNumCards );
               // the card that is shown in the stack
-              game.to(room).emit("newLastCard", hand[index]);
               rooms[room].lastCard = hand[index]
               // the actual last card
               game.to(room).emit("actualLastCard", hand[index])
