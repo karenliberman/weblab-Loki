@@ -19,7 +19,7 @@ class DeckServer extends Component {
         placedCard: "placeCard",
         lastCard: "placeCard",
         isTurn: false,
-        violation: undefined,
+        violation: "<- Place a card on the pile",
         enemyCardNumber: new Array(7).fill(this.props.numCards),
         enemies: this.props.players.slice(this.props.players.indexOf(this.props.userName), this.props.players.indexOf(this.props.userName)+1),
 
@@ -198,6 +198,10 @@ class DeckServer extends Component {
               </div>
             )}
             </Droppable>
+
+            <div>
+              <p>{this.state.violation}</p>
+            </div>
 
           </div>
 
