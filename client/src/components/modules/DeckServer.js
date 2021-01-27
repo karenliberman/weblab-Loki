@@ -40,7 +40,7 @@ class DeckServer extends Component {
       this.setState({hand: hand.cards})
     });
 
-    gamesocket.on("newLastCard", (card) => {
+    gamesocket.on("actualLastCard", (card) => {
       if (card !== null){
         this.setState({lastCard: card.suit+card.value})
       }

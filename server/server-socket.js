@@ -265,7 +265,7 @@ module.exports = {
           // get first card to the stack
           const lastCard = logic.newCard();
           rooms[room].lastCard = lastCard;
-          game.to(room).emit("newLastCard", lastCard);
+          game.to(room).emit("actualLastCard", lastCard);
           // starts game
           rooms[room][socket.id].isTurn = true;
           rooms[room].pageStatus = "game";
