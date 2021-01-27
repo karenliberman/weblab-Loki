@@ -21,7 +21,7 @@ class DeckServer extends Component {
         isTurn: false,
         violation: "<- Place a card on the pile",
         enemyCardNumber: new Array(7).fill(this.props.numCards),
-        enemies: this.props.players.slice(this.props.players.indexOf(this.props.userName), this.props.players.indexOf(this.props.userName)+1),
+        enemies: this.getEnemies(),
 
     }
     
@@ -122,7 +122,14 @@ class DeckServer extends Component {
     this.setState({hand: newHand});
   };
 
- 
+  getEnemies = () => {
+    //makes a copy of the players array
+    let enemies = this.props.players.slice();
+    enemies.splice(this.props.players.indexOf(this.props.userName)) //removes your username from the enemies array
+
+    return enemies;
+
+  }
 
   render() {
 
