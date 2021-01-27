@@ -7,7 +7,6 @@ import WaitingRoom from "../modules/WaitingRoom.js";
 import "./Rules.css";
 import { get, post } from "../../utilities.js";
 import Confetti from "react-confetti";
-import {useWindowSize} from "react-use";
 
 class LobbyRoom extends Component {
   constructor(props) {
@@ -90,7 +89,6 @@ class LobbyRoom extends Component {
 
   render() {
     let players;
-    const {width, height} = useWindowSize();
 
     if (this.state.players.length === 0) {
       players = [];
@@ -120,7 +118,7 @@ class LobbyRoom extends Component {
       } else if (this.state.pageStatus === "winner") {
         return (
           <div className="u-textCenter">
-            <h1>{this.state.winner}</h1>
+            <h1>{this.state.winner} has won!</h1>
             <div>
               <button className="button2" onClick={() => returnLobby(this.props.roomId)} > Return to Lobby </button>
             </div>
@@ -128,7 +126,7 @@ class LobbyRoom extends Component {
               <button className="button2"> leave </button>
             </Link>
             <div>             
-              <Confetti width={width} height={height}/>
+              <Confetti width={window.innerWidth} height={window.innerHeight}/>
             </div>
           </div>
         )
