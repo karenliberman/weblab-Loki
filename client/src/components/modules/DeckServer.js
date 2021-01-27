@@ -103,29 +103,56 @@ class DeckServer extends Component {
 
         <DragDropContext onDragEnd={this.onDragEnd}
         >
+
+        <div className="enemyBoxContainer-top">
+          
+          <div className="enemyBox"> 
+          <p className="enemyText">enemy box 2  </p>
+          </div>
+          <div className="enemyBox"> enemy box 1 </div>
+          <div className="enemyBox"> enemy box 3 </div>
+
+        </div>
         
+        <div className="gameTableAndEnemyContainter">
 
-        <div className="u-textCenter">
-            {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
-            {console.log("ITS ME:", this.props.userName)}
+          <div className="enemyBoxContainer-left">
+            
+            <div> enemy box 4 </div>
+            <div> enemy box 6 </div>
+
+          </div>
+
+          <div className="u-textCenter">
+              {this.props.playerTurn ? (<h3>{this.props.playerTurn}'s Turn</h3>) : (<h3> Game has yet to start</h3>)}
+              {console.log("ITS ME:", this.props.userName)}
+          </div>
+
+          <div className="gameTable">
+
+            <Droppable droppableId={"targetContainer"} direction="horizontal">
+
+            {(provided, snapshot) => (
+              <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
+              isDraggingOver={snapshot.isDraggingOver}
+              >
+
+                <div className={"cardSetting " + this.state.lastCard}> </div>
+
+              </div>
+            )}
+            </Droppable>
+
+          </div>
+
+          <div className="enemyBoxContainer-right">
+            
+            <div> enemy box 5 </div>
+            <div> enemy box 7 </div>
+
+          </div>
         </div>
 
-        <div className="gameTable">
-
-          <Droppable droppableId={"targetContainer"} direction="horizontal">
-
-          {(provided, snapshot) => (
-            <div className = {(this.props.isDraggingOver ? "hoverPile" : "cardPile")} ref={provided.innerRef} {...provided.droppableProps} 
-            isDraggingOver={snapshot.isDraggingOver}
-            >
-
-              <div className={"cardSetting " + this.state.lastCard}> </div>
-
-            </div>
-          )}
-          </Droppable>
-
-        </div>
         <br/>
         <br/>
 
