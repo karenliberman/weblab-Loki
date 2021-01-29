@@ -1,5 +1,5 @@
 ## Running the Project
-(run each of these 2 open different terminals)
+(run each of these on 2 open different terminals)
 - npm start
 - npm run hotloader
 
